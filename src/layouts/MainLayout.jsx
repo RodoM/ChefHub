@@ -5,7 +5,7 @@ const MainLayout = () => {
   return (
     <div>
       <Header />
-      <div>
+      <div className="px-4 sm:container">
         <Outlet />
       </div>
     </div>
