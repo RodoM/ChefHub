@@ -1,5 +1,6 @@
 import { RecipeCard } from "@/components/recipe/RecipeCard";
 import { Button } from "@/components/ui/button";
+import { Pencil } from "lucide-react";
 
 const UserProfile = () => {
   const recipes = [
@@ -28,14 +29,15 @@ const UserProfile = () => {
   return (
     <div className="flex justify-center w-full my-10">
       <div className="w-full max-w-7xl p-2">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Rodolfo Meroi</h2>
-          <Button className="mt-2 md:mt-0 md:ml-auto w-full md:w-auto">
-            Editar Perfil
+          <Button className="ml-4 flex items-center justify-center">
+            <span className="hidden md:block">Editar Perfil</span>
+            <Pencil className="md:ml-2 block md:hidden" />
           </Button>
         </div>
 
-        <div className="flex flex-col md:flex-row md:items-start gap-8 mb-8">
+        <div className="flex flex-col md:flex-row md:items-start gap-8 mb-8 items-center">
           <img
             src="https://avatars.githubusercontent.com/u/87952837?v=4"
             alt="Foto del Usuario"
