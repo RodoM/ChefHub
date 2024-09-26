@@ -1,6 +1,8 @@
+import PropTypes from "prop-types";
 import { Heart, Clock, Flame, Star } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Link } from "react-router-dom";
 
 export const RecipeCard = ({title, image, description, preparation_time, difficulty, score}) => {
   return (
@@ -8,7 +10,7 @@ export const RecipeCard = ({title, image, description, preparation_time, difficu
       <img
         src={image}
         alt="spaghetti"
-        className="h-full object-cover"
+        className="h-full object-cover rounded-l-lg"
       />
       <div>
         <CardHeader>
@@ -24,9 +26,20 @@ export const RecipeCard = ({title, image, description, preparation_time, difficu
           <div className="flex items-center gap-2 text-muted-foreground"><Star /> {score}</div>
         </CardContent>
         <CardFooter>
-          <Button>Ver receta</Button>
+          <Link to="/recipe-detail/1">
+            <Button>Ver receta</Button>
+          </Link>
         </CardFooter>
       </div>
     </Card>
   )
+}
+
+RecipeCard.propTypes = {
+  title: PropTypes.string,
+  image: PropTypes.string,
+  description: PropTypes.string,
+  preparation_time: PropTypes.number,
+  difficulty: PropTypes.string,
+  score: PropTypes.number,
 }
