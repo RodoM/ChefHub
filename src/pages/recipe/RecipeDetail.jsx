@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button";
 import { CommentList } from "@/components/comment/CommentList";
+import { Link } from "react-router-dom";
 
 const RecipeDetail = () => {
   return (
@@ -32,10 +33,13 @@ const RecipeDetail = () => {
         <Heart className="text-muted-foreground cursor-pointer ml-auto" />
       </div>
 
-      <p className="text-muted-foreground">
-        El spaghetti carbonara es un plato clásico de la cocina italiana, originario de Roma.
-        Consiste en espaguetis mezclados con una salsa hecha de huevos, queso (tradicionalmente pecorino romano),
-        panceta o guanciale, y pimienta negra.
+      <p>
+        <Link to="/user-profile/:id" className="font-medium underline">Autor de la receta: </Link>
+        <span className="text-muted-foreground italic">
+          "El spaghetti carbonara es un plato clásico de la cocina italiana, originario de Roma.
+          Consiste en espaguetis mezclados con una salsa hecha de huevos, queso (tradicionalmente pecorino romano),
+          panceta o guanciale, y pimienta negra."
+        </span>
       </p>
 
       <div className="flex gap-2">
