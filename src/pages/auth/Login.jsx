@@ -3,11 +3,11 @@ import { Input } from "@/components/ui/input";
 import { Croissant } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useContext, useRef, useState } from "react";
-import { UserAuthenticationContext } from "@/services/authentication/UserAuthenticationContext";
+import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
 import { Navigate } from "react-router-dom";
 
 function Login() {
-  const { user } = useContext(UserAuthenticationContext);
+  const { user, login } = useContext(AuthenticationContext);
   if (user) {
     return <Navigate to="/" replace />;
   }
@@ -17,8 +17,6 @@ function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const [errors, setErrors] = useState({});
-
-  const { login } = useContext(UserAuthenticationContext);
 
   const validateForm = () => {
     const errors = {};
@@ -43,7 +41,7 @@ function Login() {
     }
     setErrors({});
     if (email === "admin@gmail.com" && password === "123") {
-      login(email);
+      login({ user: email, role: "admin" });
     }
   };
   return (

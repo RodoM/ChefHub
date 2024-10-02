@@ -13,6 +13,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import NotFound from "./pages/error/NotFound";
 import UserProtected from "./routes/UserProtected";
+import AdminProtected from "./routes/AdminProtected";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -62,7 +63,11 @@ const App = () => {
         },
         {
           path: "create-moderator",
-          element: <CreateModerator />,
+          element: (
+            <AdminProtected>
+              <CreateModerator />
+            </AdminProtected>
+          ),
         },
         {
           path: "edit-moderator/:id",

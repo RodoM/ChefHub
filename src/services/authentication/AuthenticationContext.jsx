@@ -1,10 +1,10 @@
 import { createContext, useState } from "react";
 
-export const UserAuthenticationContext = createContext();
+export const AuthenticationContext = createContext();
 
-const userStorage = JSON.stringify(localStorage.getItem("user"));
+const userStorage = localStorage.getItem("user");
 
-const UserAuthenticationContextProvider = ({ children }) => {
+const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState(
     userStorage ? JSON.parse(userStorage) : null
   );
@@ -21,10 +21,10 @@ const UserAuthenticationContextProvider = ({ children }) => {
 
   const data = { user, login, logout };
   return (
-    <UserAuthenticationContext.Provider value={data}>
+    <AuthenticationContext.Provider value={data}>
       {children}
-    </UserAuthenticationContext.Provider>
+    </AuthenticationContext.Provider>
   );
 };
 
-export default UserAuthenticationContextProvider;
+export default AuthenticationContextProvider;

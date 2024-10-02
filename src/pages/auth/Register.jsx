@@ -4,10 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useContext, useRef, useState } from "react";
-import { UserAuthenticationContext } from "@/services/authentication/UserAuthenticationContext";
+import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
 import { Navigate } from "react-router-dom";
 const Register = () => {
-  const { user } = useContext(UserAuthenticationContext);
+  const { user } = useContext(AuthenticationContext);
   if (user) {
     return <Navigate to={"/"} replace />;
   }

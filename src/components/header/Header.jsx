@@ -9,11 +9,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { UserAuthenticationContext } from "@/services/authentication/UserAuthenticationContext";
+import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
 import { Button } from "../ui/button";
 
 const Header = () => {
-  const { user, logout } = useContext(UserAuthenticationContext);
+  const { user, logout } = useContext(AuthenticationContext);
   return (
     <header className="flex items-center justify-between gap-4 border-b border-input px-2 py-2 md:px-6">
       <Link to="/" className="flex items-center gap-2">
