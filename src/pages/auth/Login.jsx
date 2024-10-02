@@ -2,14 +2,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Croissant } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
+import { Navigate } from "react-router-dom";
 
 function Login() {
+  const { user, login } = useContext(AuthenticationContext);
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const emailRef = useRef();
   const passwordRef = useRef();
   const [errors, setErrors] = useState({});
+
   const validateForm = () => {
     const errors = {};
     if (email.trim() === "") {
@@ -32,7 +40,9 @@ function Login() {
       return;
     }
     setErrors({});
-    alert("Formulario enviado");
+    if (email === "admin@gmail.com" && password === "123") {
+      login({ user: email, role: "admin" });
+    }
   };
   return (
     <div className="flex justify-center items-center h-screen p-2">
