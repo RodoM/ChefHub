@@ -12,6 +12,7 @@ import EditModerator from "./pages/moderator/EditModerator";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import NotFound from "./pages/error/NotFound";
+import UserProtected from "./routes/UserProtected";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -29,11 +30,19 @@ const App = () => {
         },
         {
           path: "create-recipe",
-          element: <CreateRecipe />,
+          element: (
+            <UserProtected>
+              <CreateRecipe />
+            </UserProtected>
+          ),
         },
         {
           path: "edit-recipe/:id",
-          element: <EditRecipe />,
+          element: (
+            <UserProtected>
+              <EditRecipe />
+            </UserProtected>
+          ),
         },
         {
           path: "user-profile/:id",
@@ -41,7 +50,11 @@ const App = () => {
         },
         {
           path: "edit-user/:id",
-          element: <EditUser />,
+          element: (
+            <UserProtected>
+              <EditUser />
+            </UserProtected>
+          ),
         },
         {
           path: "user-list",
@@ -58,7 +71,7 @@ const App = () => {
         {
           path: "*",
           element: <NotFound />,
-        }
+        },
       ],
     },
     {
@@ -71,9 +84,7 @@ const App = () => {
     },
   ]);
 
-  return (
-    <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;

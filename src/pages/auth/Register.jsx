@@ -3,9 +3,14 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useRef, useState } from "react";
-
+import { useContext, useRef, useState } from "react";
+import { UserAuthenticationContext } from "@/services/authentication/UserAuthenticationContext";
+import { Navigate } from "react-router-dom";
 const Register = () => {
+  const { user } = useContext(UserAuthenticationContext);
+  if (user) {
+    return <Navigate to={"/"} replace />;
+  }
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [photo, setPhoto] = useState("");
@@ -93,7 +98,10 @@ const Register = () => {
           </p>
 
           <div className="mb-4">
-            <Label htmlFor="fullname" className="block text-gray-700 font-semibold mb-2">
+            <Label
+              htmlFor="fullname"
+              className="block text-gray-700 font-semibold mb-2"
+            >
               Nombre y Apellido
             </Label>
             <Input
@@ -104,10 +112,15 @@ const Register = () => {
               ref={fullnameRef}
               onChange={(e) => setFullname(e.target.value)}
             />
-            {errors.fullname && <p className="text-red-500 text-xs">{errors.fullname}</p>}
+            {errors.fullname && (
+              <p className="text-red-500 text-xs">{errors.fullname}</p>
+            )}
           </div>
           <div className="mb-4">
-            <Label htmlFor="email" className="block text-gray-700 font-semibold mb-2">
+            <Label
+              htmlFor="email"
+              className="block text-gray-700 font-semibold mb-2"
+            >
               Email
             </Label>
             <Input
@@ -118,10 +131,15 @@ const Register = () => {
               ref={emailRef}
               onChange={(e) => setEmail(e.target.value)}
             />
-            {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-xs">{errors.email}</p>
+            )}
           </div>
           <div className="mb-4">
-            <Label htmlFor="photo" className="block text-gray-700 font-semibold mb-2">
+            <Label
+              htmlFor="photo"
+              className="block text-gray-700 font-semibold mb-2"
+            >
               Foto
             </Label>
             <Input
@@ -132,10 +150,15 @@ const Register = () => {
               ref={photoRef}
               onChange={(e) => setPhoto(e.target.value)}
             />
-            {errors.photo && <p className="text-red-500 text-xs">{errors.photo}</p>}
+            {errors.photo && (
+              <p className="text-red-500 text-xs">{errors.photo}</p>
+            )}
           </div>
           <div className="mb-4">
-            <Label htmlFor="email" className="block text-gray-700 font-semibold mb-2">
+            <Label
+              htmlFor="email"
+              className="block text-gray-700 font-semibold mb-2"
+            >
               Descripción
             </Label>
             <Textarea
@@ -144,10 +167,15 @@ const Register = () => {
               ref={descriptionRef}
               onChange={(e) => setDescription(e.target.value)}
             />
-            {errors.description && <p className="text-red-500 text-xs">{errors.description}</p>}
+            {errors.description && (
+              <p className="text-red-500 text-xs">{errors.description}</p>
+            )}
           </div>
           <div className="mb-4">
-            <Label htmlFor="password" className="block text-gray-700 font-semibold mb-2">
+            <Label
+              htmlFor="password"
+              className="block text-gray-700 font-semibold mb-2"
+            >
               Contraseña
             </Label>
             <Input
@@ -158,10 +186,15 @@ const Register = () => {
               ref={passwordRef}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-red-500 text-xs">{errors.password}</p>
+            )}
           </div>
           <div className="mb-8">
-            <Label htmlFor="confirmpassword" className="block text-gray-700 font-semibold mb-2">
+            <Label
+              htmlFor="confirmpassword"
+              className="block text-gray-700 font-semibold mb-2"
+            >
               Confirme su Contraseña
             </Label>
             <Input
