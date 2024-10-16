@@ -1,3 +1,4 @@
+import { LoaderCircle } from "lucide-react";
 import { RecipeList } from "@/components/recipe/RecipeList";
 import { RecipeFilter } from "@/components/recipe/RecipeFilter";
 import { Button } from "@/components/ui/button";
@@ -19,10 +20,14 @@ const Home = () => {
       }
     };
     getAllRecipes();
-  }, []);
+  }, [GetAllRecipes]);
+
   if (!recipes) {
-    return <div>Cargando recetas...</div>;
+    return <div className="h-screen flex justify-center items-center">
+      <LoaderCircle size={64} className="animate-spin" />
+    </div>;
   }
+  
   return (
     <div>
       <div className="flex items-center justify-between">
