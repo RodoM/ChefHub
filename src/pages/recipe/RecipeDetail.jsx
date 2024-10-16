@@ -139,7 +139,7 @@ const RecipeDetail = () => {
           <Button>Publicar comentario</Button>
         </div>
 
-        <CommentList />
+        <CommentList comments={recipe.comments} />
       </div>
     </div>
   );
