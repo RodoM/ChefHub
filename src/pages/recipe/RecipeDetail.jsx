@@ -1,4 +1,4 @@
-import { Star, Heart, Clock, Flame } from "lucide-react";
+import { LoaderCircle, Star, Heart, Clock, Flame } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,13 +33,18 @@ const RecipeDetail = () => {
 
   const recipeScore = (comments) => {
     if (comments.length === 0) return "SC";
-    const totalScore = comments.reduce((acc, comment) => acc + comment.score, 0);
+    const totalScore = comments.reduce(
+      (acc, comment) => acc + comment.score,
+      0
+    );
     const averageScore = totalScore / comments.length;
     return averageScore.toFixed(2);
-  }; 
+  };
 
   if (!recipe) {
-    return <div>Cargando receta...</div>;
+    return <div className="h-screen flex justify-center items-center">
+      <LoaderCircle size={64} className="animate-spin" />
+    </div>;
   }
   return (
     <div className="flex flex-col gap-4 my-4">
@@ -71,22 +76,18 @@ const RecipeDetail = () => {
           {/* Autor de la receta:{" "}  hay que modificar el metodo en el back si queremos obtener el autor de la receta */}
         </Link>
         <span className="text-muted-foreground italic">
-          "{recipe.description}"
+          &ldquo;{recipe.description}&rdquo;
         </span>
       </p>
 
       <div className="flex gap-2">
-        <Badge>Almuerzo</Badge>
-        <Badge>Cena</Badge>
-        <Badge>Pasta</Badge>
+        {recipe.categories.map((categorie, index) => (
+          <Badge key={index}>{categorie}</Badge>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <img
-          src="https://www.allrecipes.com/thmb/a_0W8yk_LLCtH-VPqg2uLD9I5Pk=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/11973-spaghetti-carbonara-ii-DDMFS-4x3-6edea51e421e4457ac0c3269f3be5157.jpg"
-          alt="spaghetti"
-          className="h-full object-cover rounded-lg"
-        />
+        <img src={recipe.urlImage} className="h-full object-cover rounded-lg" />
         <div className="flex flex-col gap-4">
           <h3 className="font-semibold">Ingredientes</h3>
           <ul className="list-disc ml-5">
