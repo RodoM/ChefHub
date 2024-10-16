@@ -13,7 +13,7 @@ import { AuthenticationContext } from "@/services/authentication/AuthenticationC
 import { Button } from "../ui/button";
 
 const Header = () => {
-  const { user, logout } = useContext(AuthenticationContext);
+  const { token, logout } = useContext(AuthenticationContext);
   return (
     <header className="flex items-center justify-between gap-4 border-b border-input px-2 py-2 md:px-6">
       <Link to="/" className="flex items-center gap-2">
@@ -23,7 +23,7 @@ const Header = () => {
 
       <Input placeholder="Buscar receta..." className="max-w-80" />
 
-      {user ? (
+      {token ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="cursor-pointer">

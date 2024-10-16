@@ -4,45 +4,51 @@ import { Croissant } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useContext, useRef, useState } from "react";
 import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, replace, useNavigate } from "react-router-dom";
 
 function Login() {
-  const { user, login } = useContext(AuthenticationContext);
-  if (user) {
+  const { token, login } = useContext(AuthenticationContext);
+  if (token) {
     return <Navigate to="/" replace />;
   }
-
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const emailRef = useRef();
   const passwordRef = useRef();
   const [errors, setErrors] = useState({});
+  let errorsForm = {};
 
   const validateForm = () => {
-    const errors = {};
     if (email.trim() === "") {
-      errors.email = "Por favor ingrese su email";
+      errorsForm.email = "Por favor ingrese su email";
       emailRef.current.focus();
-      setErrors(errors);
+      setErrors(errorsForm);
       return;
     }
     if (password.trim() === "") {
-      errors.password = "Por favor ingrese su contraseña";
+      errorsForm.password = "Por favor ingrese su contraseña";
       passwordRef.current.focus();
-      setErrors(errors);
+      setErrors(errorsForm);
       return;
     }
     return true;
   };
-  const handleForm = (e) => {
+  const handleForm = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
       return;
     }
-    setErrors({});
-    if (email === "admin@gmail.com" && password === "123") {
-      login({ user: email, role: "admin" });
+
+    const response = await login(email, password);
+    console.log(response);
+    if (response === null) {
+      console.log(response);
+      errorsForm.Authentication = "Fallo la autenticación";
+      setErrors(errorsForm);
+      return;
     }
+    navigate("/", replace);
   };
   return (
     <div className="flex justify-center items-center h-screen p-2">
@@ -100,7 +106,9 @@ function Login() {
               <p className="text-red-500 text-xs">{errors.password}</p>
             )}
           </div>
-
+          {errors.Authentication && (
+            <p className="text-red-500 text-xs">{errors.Authentication}</p>
+          )}
           {/* Botón de Iniciar Sesión */}
           <Button className="w-full">Iniciar Sesión</Button>
 

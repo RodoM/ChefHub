@@ -1,25 +1,50 @@
 import { createContext, useState } from "react";
 
 export const AuthenticationContext = createContext();
-
-const userStorage = localStorage.getItem("user");
+const url = "https://localhost:7021/api/";
+const tokenStorage = localStorage.getItem("token");
 
 const AuthenticationContextProvider = ({ children }) => {
-  const [user, setUser] = useState(
-    userStorage ? JSON.parse(userStorage) : null
-  );
+  const [token, setToken] = useState(tokenStorage);
 
-  const login = (user) => {
-    setUser(user);
-    localStorage.setItem("user", JSON.stringify(user));
+  const login = async (email,password) => {
+    const requestData = {
+      email: email,
+      password: password,
+    };
+    try {
+      const response = await fetch(url + "Auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "*/*",
+        },
+        body: JSON.stringify(requestData),
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+      const data = await response.text();
+      setToken(data);
+      localStorage.setItem("token", data);
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   };
+
+  
+
+  
 
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+    setToken(null);
+    localStorage.removeItem("token");
   };
 
-  const data = { user, login, logout };
+  const data = { token, login, logout };
   return (
     <AuthenticationContext.Provider value={data}>
       {children}
