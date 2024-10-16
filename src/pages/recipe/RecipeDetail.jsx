@@ -29,8 +29,15 @@ const RecipeDetail = () => {
       }
     };
     getRecipeById();
-    console.log(recipe);
   }, [id, GetRecipeById]);
+
+  const recipeScore = (comments) => {
+    if (comments.length === 0) return "SC";
+    const totalScore = comments.reduce((acc, comment) => acc + comment.score, 0);
+    const averageScore = totalScore / comments.length;
+    return averageScore.toFixed(2);
+  }; 
+
   if (!recipe) {
     return <div>Cargando receta...</div>;
   }
@@ -42,7 +49,7 @@ const RecipeDetail = () => {
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-2 text-muted-foreground">
               <Star />
-              4.5
+              {recipeScore(recipe.comments)}
             </span>
             <Separator orientation="vertical" className="h-4" />
             <span className="flex items-center gap-2 text-muted-foreground">
