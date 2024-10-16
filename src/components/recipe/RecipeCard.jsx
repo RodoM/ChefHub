@@ -18,8 +18,15 @@ export const RecipeCard = ({
   description,
   preparationTime,
   difficulty,
-  score,
+  comments,
 }) => {
+  const recipeScore = (comments) => {
+    if (comments.length === 0) return "SC";
+    const totalScore = comments.reduce((acc, comment) => acc + comment.score, 0);
+    const averageScore = totalScore / comments.length;
+    return averageScore.toFixed(2);
+  };  
+
   return (
     <Card className="grid sm:grid-cols-[20%_auto]">
       <img
@@ -45,7 +52,7 @@ export const RecipeCard = ({
             <Flame /> {difficulty}
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
-            <Star /> {score}
+            <Star /> {recipeScore(comments)}
           </div>
         </CardContent>
         <CardFooter>
@@ -59,10 +66,11 @@ export const RecipeCard = ({
 };
 
 RecipeCard.propTypes = {
+  id: PropTypes.number,
   title: PropTypes.string,
   urlImage: PropTypes.string,
   description: PropTypes.string,
   preparationTime: PropTypes.number,
   difficulty: PropTypes.number,
-  score: PropTypes.number,
+  comments: PropTypes.array,
 };
