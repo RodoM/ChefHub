@@ -3,7 +3,7 @@ import { RecipeCard } from "./RecipeCard";
 
 export const RecipeList = ({ recipes }) => {
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4 h-fit">
       {recipes.map((recipe, index) => {
         return <RecipeCard {...recipe} key={index} />;
       })}
