@@ -6,7 +6,9 @@ const tokenStorage = localStorage.getItem("token");
 const userStorage = localStorage.getItem("user");
 const AuthenticationContextProvider = ({ children }) => {
   const [token, setToken] = useState(tokenStorage);
-  const [user, setUser] = useState(userStorage ? JSON.parse(userStorage) : null);
+  const [user, setUser] = useState(
+    userStorage ? JSON.parse(userStorage) : null
+  );
   const login = async (email, password) => {
     const requestData = {
       email: email,
@@ -29,7 +31,11 @@ const AuthenticationContextProvider = ({ children }) => {
       setToken(data);
       localStorage.setItem("token", data);
       const decoded = jwtDecode(data);
-      const user = { fullName: decoded.fullName, photo: decoded.photo };
+      const user = {
+        id: decoded.sub,
+        fullName: decoded.fullName,
+        photo: decoded.photo,
+      };
       setUser(user);
 
       localStorage.setItem("user", JSON.stringify(user));

@@ -14,12 +14,13 @@ const UserProfile = () => {
   useEffect(() => {
     const getUserById = async () => {
       const user = await GetUserById(id);
+      console.log(user);
       if (user) {
         setUser(user.data);
       }
     };
     getUserById();
-  }, [GetUserById]);
+  }, [id, GetUserById]);
   useEffect(() => {
     const getRecipesByUser = async () => {
       const recipes = await GetRecipesByUser(id);
@@ -28,7 +29,17 @@ const UserProfile = () => {
       }
     };
     getRecipesByUser();
-  }, [GetRecipesByUser]);
+  }, [id, GetRecipesByUser]);
+  function isValidURL(urlString) {
+    try {
+      new URL(urlString);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  if (!user) return <div>Loading...</div>;
   return (
     <div className="flex justify-center w-full my-10">
       <div className="w-full max-w-7xl p-2">
@@ -42,7 +53,11 @@ const UserProfile = () => {
 
         <div className="flex flex-col md:flex-row md:items-start gap-8 mb-8 items-center">
           <img
-            src={user.urlPhoto ? user.urlPhoto : "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png"}
+            src={
+              isValidURL(user.urlPhoto)
+                ? user.urlPhoto
+                : "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png"
+            }
             alt={user?.fullName}
             className="rounded-md object-cover h-[220px] w-[220px] md:h-[260px] md:w-[260px]"
           />

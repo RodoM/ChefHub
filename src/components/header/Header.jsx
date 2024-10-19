@@ -33,7 +33,7 @@ const Header = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" sideOffset={16}>
             <DropdownMenuItem>
-              <Link to="/user-profile/:id" className="flex items-center">
+              <Link to={`/user-profile/${user?.id}`} className="flex items-center">
                 <UserRound size={16} className="mr-2" />
                 Mi perfil
               </Link>
