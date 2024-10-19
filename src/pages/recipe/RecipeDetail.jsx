@@ -59,7 +59,7 @@ const RecipeDetail = () => {
             <Separator orientation="vertical" className="h-4" />
             <span className="flex items-center gap-2 text-muted-foreground">
               <Clock />
-              {recipe.preparationTime} minutos
+              {recipe.preparationpreparationTime} minutos
             </span>
             <Separator orientation="vertical" className="h-4" />
             <span className="flex items-center gap-2 text-muted-foreground">

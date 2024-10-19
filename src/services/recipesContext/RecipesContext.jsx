@@ -69,7 +69,36 @@ const RecipeContextProvider = ({ children }) => {
       return null;
     }
   };
-  const data = { GetAllRecipes, GetRecipeById, GetRecipesByUser };
+
+  const CreateRecipe = async (recipe) => {
+    console.log(recipe);
+    try {
+      const response = await fetch(URL + "Recipe/CreateRecipe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          accept: "*/*",
+        },
+        body: JSON.stringify(recipe),
+      });
+      console.log(response);
+
+      if (!response.ok) {
+
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  const data = { GetAllRecipes, GetRecipeById, GetRecipesByUser, CreateRecipe };
 
   return (
     <RecipeContext.Provider value={data}>{children}</RecipeContext.Provider>
