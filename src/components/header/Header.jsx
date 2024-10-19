@@ -13,7 +13,7 @@ import { AuthenticationContext } from "@/services/authentication/AuthenticationC
 import { Button } from "../ui/button";
 
 const Header = () => {
-  const { user, logout } = useContext(AuthenticationContext);
+  const { token, logout, user } = useContext(AuthenticationContext);
   return (
     <header className="flex items-center justify-between gap-4 border-b border-input px-2 py-2 md:px-6">
       <Link to="/" className="flex items-center gap-2">
@@ -23,17 +23,17 @@ const Header = () => {
 
       <Input placeholder="Buscar receta..." className="max-w-80" />
 
-      {user ? (
+      {token ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="cursor-pointer">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarImage src={user?.photo} alt={user?.fullName} />
+              <AvatarFallback>{user?.fullName.slice(0, 2)}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" sideOffset={16}>
             <DropdownMenuItem>
-              <Link to="/user-profile/:id" className="flex items-center">
+              <Link to={`/user-profile/${user?.id}`} className="flex items-center">
                 <UserRound size={16} className="mr-2" />
                 Mi perfil
               </Link>

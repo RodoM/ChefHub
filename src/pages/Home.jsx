@@ -7,8 +7,9 @@ import { AuthenticationContext } from "@/services/authentication/AuthenticationC
 import { Link } from "react-router-dom";
 import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useState } from "react";
+
 const Home = () => {
-  const { user } = useContext(AuthenticationContext);
+  const { token, user } = useContext(AuthenticationContext);
   const { GetAllRecipes } = useContext(RecipeContext);
   const [recipes, setRecipes] = useState(null);
   useEffect(() => {
@@ -32,7 +33,7 @@ const Home = () => {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold my-4">Recetas</h1>
-        {user && (
+        {token && (
           <Button>
             {" "}
             <Link to={"/create-recipe"}>Crear receta</Link>
