@@ -10,8 +10,7 @@ import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useState } from "react";
 
 const Home = () => {
-  const { user } = useContext(AuthenticationContext);
-
+  const { token, user } = useContext(AuthenticationContext);
   const { GetAllRecipes } = useContext(RecipeContext);
 
   const [recipes, setRecipes] = useState([]);
@@ -57,7 +56,7 @@ const Home = () => {
           onChange={handleSearchChange}
         />
 
-        {user && (
+        {token && (
           <Button>
             {" "}
             <Link to={"/create-recipe"}>

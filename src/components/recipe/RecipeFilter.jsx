@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 
 const filters = [
   {value: "Todas", active: true},
-  {value: "Favoritas", active: false},
   {value: "Desayuno", active: false},
   {value: "Almuerzo", active: false},
   {value: "Merienda", active: false},

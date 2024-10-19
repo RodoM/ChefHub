@@ -14,6 +14,7 @@ import Register from "./pages/auth/Register";
 import NotFound from "./pages/error/NotFound";
 import UserProtected from "./routes/UserProtected";
 import AdminProtected from "./routes/AdminProtected";
+import { UserContextProvider } from "./services/userContext/UserContext";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -47,7 +48,11 @@ const App = () => {
         },
         {
           path: "user-profile/:id",
-          element: <UserProfile />,
+          element: (
+            <UserContextProvider>
+              <UserProfile />
+            </UserContextProvider>
+          ),
         },
         {
           path: "edit-user/:id",

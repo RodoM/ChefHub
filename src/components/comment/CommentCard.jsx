@@ -7,7 +7,7 @@ export const CommentCard = ({comment}) => {
     <Card>
       <CardHeader className="flex flex-row justify-between items-center space-y-0">
         <div className="flex items-center gap-2">
-          <img src={comment.userResponse.urlphoto} alt="foto de perfil" className="w-9 h-9 bg-muted-foreground rounded-full" />
+          <img src={comment.userResponse.urlphoto ? comment.userResponse.urlphoto : "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png"} alt="foto de perfil" className="w-9 h-9 bg-muted-foreground rounded-full" />
           <p className="font-semibold">{comment.userResponse.fullName}</p>
         </div>
         <div className="flex items-center gap-1 text-muted-foreground">
