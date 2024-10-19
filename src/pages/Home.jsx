@@ -7,8 +7,9 @@ import { AuthenticationContext } from "@/services/authentication/AuthenticationC
 import { Link } from "react-router-dom";
 import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useState } from "react";
+
 const Home = () => {
-  const { token } = useContext(AuthenticationContext);
+  const { token, user } = useContext(AuthenticationContext);
   const { GetAllRecipes } = useContext(RecipeContext);
   const [recipes, setRecipes] = useState(null);
   useEffect(() => {

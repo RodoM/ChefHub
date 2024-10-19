@@ -71,6 +71,6 @@ RecipeCard.propTypes = {
   urlImage: PropTypes.string,
   description: PropTypes.string,
   preparationTime: PropTypes.number,
-  difficulty: PropTypes.number,
+  difficulty: PropTypes.string,
   comments: PropTypes.array,
 };

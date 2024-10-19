@@ -44,7 +44,7 @@ function Login() {
     console.log(response);
     if (response === null) {
       console.log(response);
-      errorsForm.Authentication = "Fallo la autenticación";
+      errorsForm.Authentication = "Email y/o contraseña incorrectos";
       setErrors(errorsForm);
       return;
     }
