@@ -9,7 +9,7 @@ export const RecipeList = ({ recipes }) => {
       </div>
     );
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4 h-fit">
       {recipes.map((recipe, index) => {
         return <RecipeCard {...recipe} key={index} />;
       })}

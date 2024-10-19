@@ -1,5 +1,4 @@
 import { ChefHat, UserRound, LogOut } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,8 +19,6 @@ const Header = () => {
         <ChefHat size={32} />
         <span className="font-semibold text-2xl hidden md:block">ChefHub</span>
       </Link>
-
-      <Input placeholder="Buscar receta..." className="max-w-80" />
 
       {token ? (
         <DropdownMenu>
