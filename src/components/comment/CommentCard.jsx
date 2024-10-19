@@ -1,9 +1,8 @@
 import PropTypes from "prop-types";
-import { Star, Calendar } from "lucide-react"
+import { Star } from "lucide-react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 
 export const CommentCard = ({comment}) => {
-  console.log(comment);
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between items-center space-y-0">
@@ -24,9 +23,5 @@ export const CommentCard = ({comment}) => {
 }
 
 CommentCard.propTypes = {
-  photo: PropTypes.string,
-  name: PropTypes.string,
-  comment: PropTypes.string,
-  score: PropTypes.number,
-  date: PropTypes.string,
+  comment: PropTypes.object,
 }
