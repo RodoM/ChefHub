@@ -1,19 +1,24 @@
 import { createContext, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+
 export const AuthenticationContext = createContext();
+
 const url = "https://localhost:7021/api/";
 const tokenStorage = localStorage.getItem("token");
 const userStorage = localStorage.getItem("user");
+
 const AuthenticationContextProvider = ({ children }) => {
   const [token, setToken] = useState(tokenStorage);
   const [user, setUser] = useState(
     userStorage ? JSON.parse(userStorage) : null
   );
+
   const login = async (email, password) => {
     const requestData = {
       email: email,
       password: password,
     };
+
     try {
       const response = await fetch(url + "Auth", {
         method: "POST",
