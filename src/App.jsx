@@ -1,5 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
+import AnonymousLayout from "./layouts/AnonymousLayout";
 import Home from "./pages/Home";
 import RecipeDetail from "./pages/recipe/RecipeDetail";
 import CreateRecipe from "./pages/recipe/CreateRecipe";
@@ -85,12 +86,28 @@ const App = () => {
       ],
     },
     {
-      path: "login",
-      element: <Login />,
+      path: "/login",
+      element: <AnonymousLayout />,
+      children: [
+        {
+          path: "/login",
+          element: <Login />,
+        },
+      ],
     },
     {
-      path: "register",
-      element: <Register />,
+      path: "/register",
+      element: <AnonymousLayout />,
+      children: [
+        {
+          path: "/register",
+          element: (
+            <UserContextProvider>
+              <Register />
+            </UserContextProvider>
+          ),
+        },
+      ],
     },
   ]);
 
