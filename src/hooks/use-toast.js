@@ -18,22 +18,22 @@ function genId() {
   return count.toString();
 }
 
-const toastpreparationTimeouts = new Map()
+const toastTimeouts = new Map()
 
 const addToRemoveQueue = (toastId) => {
-  if (toastpreparationTimeouts.has(toastId)) {
+  if (toastTimeouts.has(toastId)) {
     return
   }
 
-  const preparationTimeout = setTimeout(() => {
-    toastpreparationTimeouts.delete(toastId)
+  const timeout = setTimeout(() => {
+    toastTimeouts.delete(toastId)
     dispatch({
       type: "REMOVE_TOAST",
       toastId: toastId,
     })
   }, TOAST_REMOVE_DELAY)
 
-  toastpreparationTimeouts.set(toastId, preparationTimeout)
+  toastTimeouts.set(toastId, timeout)
 }
 
 export const reducer = (state, action) => {
