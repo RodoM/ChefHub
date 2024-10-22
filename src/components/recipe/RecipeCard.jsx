@@ -16,7 +16,7 @@ export const RecipeCard = ({
   title,
   urlImage,
   description,
-  preparationTime,
+  preparationpreparationTime,
   difficulty,
   comments,
 }) => {
@@ -46,7 +46,7 @@ export const RecipeCard = ({
         </CardHeader>
         <CardContent className="flex gap-4">
           <div className="flex items-center gap-2 text-muted-foreground">
-            <Clock /> {preparationTime} m
+            <Clock /> {preparationpreparationTime} m
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Flame /> {difficulty}
@@ -70,7 +70,7 @@ RecipeCard.propTypes = {
   title: PropTypes.string,
   urlImage: PropTypes.string,
   description: PropTypes.string,
-  preparationTime: PropTypes.number,
+  preparationpreparationTime: PropTypes.number,
   difficulty: PropTypes.string,
   comments: PropTypes.array,
 };

@@ -3,73 +3,89 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { RecipeContext } from "@/services/recipesContext/RecipesContext";
+import { useContext } from "react";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/hooks/use-toast";
 
 const CreateRecipe = () => {
   // estas son las definiciones de las referencias
-  const nameRef = useRef();
+  const titleRef = useRef();
   const imageRef = useRef();
   const descriptionRef = useRef();
-  const firstIngredientRef = useRef();
+  const ingredientsRef = useRef();
   const instructionsRef = useRef();
   const categoriesRef = useRef();
   const difficultyRef = useRef();
-  const timeRef = useRef();
+  const preparationTimeRef = useRef();
+
+  const { CreateRecipe } = useContext(RecipeContext);
 
   //  estas son las vriables de estado
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [title, setTitle] = useState("");
+  const [urlImage, seturlImage] = useState("");
   const [description, setDescription] = useState("");
-  const [firstIngredient, setFirstIngredient] = useState("");
+  const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
   const [categories, setCategories] = useState("");
   const [difficulty, setDifficulty] = useState("");
-  const [time, setTime] = useState("");
+  const [preparationTime, setPreparationTime] = useState("");
+  const { toast } = useToast();
 
   // este es el estado  que va a guardar los errores
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
       return;
     }
+
     const newRecipe = {
-      name,
-      image,
-      description,
-      firstIngredient,
-      instructions,
-      categories,
-      difficulty,
-      time,
+      title: title,
+      urlImage: urlImage,
+      description: description,
+      ingredients: ingredients
+        .split(",")
+        .map((ingredient) => ingredient.trim()),
+      instructions: instructions,
+      categories: categories.split(",").map((category) => category.trim()),
+      difficulty: parseInt(difficulty),
+      preparationTime: parseInt(preparationTime),
     };
 
     console.log(newRecipe);
-
-    alert("Recipe created successfully");
+    //  crear receta
+    const success = await CreateRecipe(newRecipe);
+    if (!success) {
+      showToast("Error al crear la receta");
+      return;
+    } else {
+      showToast("Receta creada exitosamente");
+    }
 
     setErrors({});
-    setName("");
-    setImage("");
+    setTitle("");
+    seturlImage("");
     setDescription("");
-    setFirstIngredient("");
+    setIngredients("");
     setInstructions("");
     setCategories("");
     setDifficulty("");
-    setTime("");
+    setPreparationTime("");
   };
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (name.trim() === "") {
-      newErrors.name = "El nombre es requerido";
-      nameRef.current.focus();
+    if (title.trim() === "") {
+      newErrors.title = "El nombre es requerido";
+      titleRef.current.focus();
       setErrors(newErrors);
       return;
     }
-    if (image.trim() === "") {
-      newErrors.image = "La imagen es requerida";
+    if (urlImage.trim() === "") {
+      newErrors.urlImage = "La imagen es requerida";
       imageRef.current.focus();
       setErrors(newErrors);
       return;
@@ -80,9 +96,9 @@ const CreateRecipe = () => {
       setErrors(newErrors);
       return;
     }
-    if (firstIngredient.trim() === "") {
-      newErrors.firstIngredient = "El primer ingrediente es requerido";
-      firstIngredientRef.current.focus();
+    if (ingredients.trim() === "") {
+      newErrors.ingredients = "El primer ingrediente es requerido";
+      ingredientsRef.current.focus();
       setErrors(newErrors);
       return;
     }
@@ -104,36 +120,23 @@ const CreateRecipe = () => {
       setErrors(newErrors);
       return;
     }
-    if (time.trim() === "") {
-      newErrors.time = "El tiempo de preparación es requerido";
-      timeRef.current.focus();
+    if (preparationTime.trim() === "") {
+      newErrors.preparationTime = "El tiempo de preparación es requerido";
+      preparationTimeRef.current.focus();
       setErrors(newErrors);
       return;
     }
     return true;
   };
 
-  const [ingredients, setIngredients] = useState([{ value: "" }]);
-
-  const handleAddIngredient = (event) => {
-    event.preventDefault();
-    setIngredients([...ingredients, { value: "" }]);
+  const showToast = (msg) => {
+    toast({
+      description: msg,
+    });
   };
-
-  const handleRemoveIngredient = (event, index) => {
-    event.preventDefault();
-    setIngredients(ingredients.filter((_, idx) => idx !== index));
-  };
-
-  const handleChangeIngredient = (value, index) => {
-    const newIngredients = ingredients.map((item, idx) =>
-      idx === index ? { value } : item
-    );
-    setIngredients(newIngredients);
-  };
-
   return (
     <div className="flex justify-center w-full mt-10 p-8 ">
+      <Toaster />
       <form className="w-full max-w-7xl  " onSubmit={handleSubmit}>
         <h1 className="text-left font-bold text-2xl mb-8">Nueva Receta</h1>
 
@@ -142,25 +145,25 @@ const CreateRecipe = () => {
             <Label className="block mb-2">Nombre</Label>
             <Input
               className="w-full"
-              full
               placeholder="Ingrese el nombre de la receta"
-              onChange={(e) => setName(e.target.value)}
-              ref={nameRef}
-              value={name}
+              onChange={(e) => setTitle(e.target.value)}
+              ref={titleRef}
+              value={title}
             />
-            {errors.name && <p className="text-red-500">{errors.name}</p>}
+            {errors.title && <p className="text-red-500">{errors.title}</p>}
           </div>
           <div className="">
             <Label className="block mb-2">Imagen</Label>
             <Input
               className="w-full"
-              full
               placeholder="Ingrese la URL de la imagen"
-              onChange={(e) => setImage(e.target.value)}
+              onChange={(e) => seturlImage(e.target.value)}
               ref={imageRef}
-              value={image}
+              value={urlImage}
             />
-            {errors.image && <p className="text-red-500">{errors.image}</p>}
+            {errors.urlImage && (
+              <p className="text-red-500">{errors.urlImage}</p>
+            )}
           </div>
         </div>
 
@@ -168,7 +171,6 @@ const CreateRecipe = () => {
           <Label className="block mb-2">Descripción</Label>
           <Textarea
             className="resize-none w-full"
-            full
             placeholder="Ingrese una descripción para la receta"
             onChange={(e) => setDescription(e.target.value)}
             ref={descriptionRef}
@@ -181,58 +183,24 @@ const CreateRecipe = () => {
 
         <div className="flex justify-between items-center mb-8">
           <div className="flex-grow mr-4">
-            <Label className="block mb-2">Primer ingrediente</Label>
+            <Label className="block mb-2">Ingredientes</Label>
             <Input
               className="w-full"
-              full
-              placeholder="Ingrese el ingrediente junto con su cantidad"
-              onChange={(e) => setFirstIngredient(e.target.value)}
-              ref={firstIngredientRef}
-              value={firstIngredient}
+              placeholder="Ingrese los ingredientes separados con coma"
+              onChange={(e) => setIngredients(e.target.value)}
+              ref={ingredientsRef}
+              value={ingredients}
             />
-            {errors.firstIngredient && (
-              <p className="text-red-500">{errors.firstIngredient}</p>
+            {errors.ingredients && (
+              <p className="text-red-500">{errors.ingredients}</p>
             )}
           </div>
-          <div className="flex-shrink">
-            <Button
-              onClick={handleAddIngredient}
-              color="primary"
-              className="mt-6"
-            >
-              Agregar
-            </Button>
-          </div>
         </div>
-
-        {ingredients.map((ingredient, index) => (
-          <div key={index} className="flex justify-between items-center mb-8 ">
-            <div className="flex-grow mr-4">
-              <Label className="block mb-2">Ingresar Ingrediente</Label>
-              <Input
-                className="w-full"
-                value={ingredient.value}
-                onChange={(e) => handleChangeIngredient(e.target.value, index)}
-                placeholder="Ingrese el ingrediente junto con su cantidad"
-              />
-            </div>
-            <div className="flex-shrink">
-              <Button
-                onClick={(e) => handleRemoveIngredient(e, index)}
-                color="primary"
-                className="mt-6"
-              >
-                Eliminar
-              </Button>
-            </div>
-          </div>
-        ))}
 
         <div className="mb-8">
           <Label className="block mb-2">Instrucciones</Label>
           <Textarea
             className="resize-none w-full"
-            full
             placeholder="Ingrese las instrucciones de la receta"
             onChange={(e) => setInstructions(e.target.value)}
             ref={instructionsRef}
@@ -248,7 +216,6 @@ const CreateRecipe = () => {
             <Label className="block mb-2">Categorías</Label>
             <Input
               className="w-full"
-              full
               placeholder="Seleccione las categorías de la receta"
               onChange={(e) => setCategories(e.target.value)}
               ref={categoriesRef}
@@ -262,7 +229,6 @@ const CreateRecipe = () => {
             <Label className="block mb-2">Dificultad</Label>
             <Input
               className="w-full"
-              full
               placeholder="Seleccione la dificultad de la receta"
               onChange={(e) => setDifficulty(e.target.value)}
               ref={difficultyRef}
@@ -278,13 +244,14 @@ const CreateRecipe = () => {
           <Label className="block mb-2">Tiempo De Preparación</Label>
           <Input
             className="w-full"
-            full
             placeholder="Ingrese el tiempo de preparación de la receta"
-            onChange={(e) => setTime(e.target.value)}
-            ref={timeRef}
-            value={time}
+            onChange={(e) => setPreparationTime(e.target.value)}
+            ref={preparationTimeRef}
+            value={preparationTime}
           />
-          {errors.time && <p className="text-red-500">{errors.time}</p>}
+          {errors.preparationTime && (
+            <p className="text-red-500">{errors.preparationTime}</p>
+          )}
         </div>
 
         <div className="flex justify-end space-x-8">
