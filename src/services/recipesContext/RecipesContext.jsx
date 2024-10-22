@@ -4,7 +4,7 @@ export const RecipeContext = createContext();
 
 const RecipeContextProvider = ({ children }) => {
   const URL = "https://localhost:7021/api/"; //cada uno debe reemplazar con su url (no estoy seguro si es la misma para todos, o si cada uno tiene un url diferente en su maquina)
-  const token = localStorage.getItem("token");
+  const getToken = () => localStorage.getItem("token");
 
   const GetAllRecipes = async () => {
     try {
@@ -71,13 +71,14 @@ const RecipeContextProvider = ({ children }) => {
   };
 
   const CreateRecipe = async (recipe) => {
+    console.log(getToken());
     console.log(recipe);
     try {
       const response = await fetch(URL + "Recipe/CreateRecipe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
           accept: "*/*",
         },
         body: JSON.stringify(recipe),
@@ -85,7 +86,6 @@ const RecipeContextProvider = ({ children }) => {
       console.log(response);
 
       if (!response.ok) {
-
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
 

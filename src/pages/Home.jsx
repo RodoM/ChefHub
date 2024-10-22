@@ -21,7 +21,7 @@ const Home = () => {
       const recipes = await GetAllRecipes();
 
       if (recipes) {
-        setRecipes(recipes.data);
+        setRecipes(recipes.data.reverse());
       }
     };
     getAllRecipes();
