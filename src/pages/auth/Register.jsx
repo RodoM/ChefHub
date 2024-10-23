@@ -8,12 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-
+import { isValidURL } from "@/helper/ValidateUrl";
 const Register = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    photo: "",
+    urlPhoto: "",
     description: "",
     password: "",
     confirmPassword: "",
@@ -46,7 +46,7 @@ const Register = () => {
       setErrors(errors);
       return;
     }
-    if (formData.photo.trim() === "") {
+    if (formData.urlPhoto.trim() === "") {
       errors.photo = "Por favor ingrese una url para su foto";
       photoRef.current.focus();
       setErrors(errors);
@@ -91,7 +91,12 @@ const Register = () => {
     }
 
     try {
-      await register(formData);
+      const userRequest = formData;
+      if (!isValidURL(userRequest.urlPhoto)) {
+        userRequest.urlPhoto =
+          "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png";
+      }
+      await register(userRequest);
       setErrors({});
       toast({
         title: "Registro exitoso",
@@ -158,7 +163,7 @@ const Register = () => {
             <Label htmlFor="photo">Foto</Label>
             <Input
               id="photo"
-              name="photo"
+              name="urlPhoto"
               type="text"
               placeholder="Ingrese una Url para su foto"
               ref={photoRef}

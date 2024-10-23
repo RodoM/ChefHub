@@ -2,7 +2,15 @@ import { useContext, useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
 import { RecipeContext } from "@/services/recipesContext/RecipesContext";
-import { LoaderCircle, Star, Heart, Clock, Flame, Pencil, Trash2 } from "lucide-react";
+import {
+  LoaderCircle,
+  Star,
+  Heart,
+  Clock,
+  Flame,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -13,8 +21,10 @@ import AlertDialogDelete from "@/components/alertDialogDelete/AlertDialogDelete"
 
 const RecipeDetail = () => {
   const { user } = useContext(AuthenticationContext);
+
   const { id } = useParams();
-  const { GetRecipeById, DeleteRecipe, createComment } = useContext(RecipeContext);
+  const { GetRecipeById, DeleteRecipe, createComment } =
+    useContext(RecipeContext);
   const [recipe, setRecipe] = useState(null);
 
   const navigate = useNavigate();
@@ -79,7 +89,7 @@ const RecipeDetail = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="flex flex-col gap-4 my-4">
       <div className="flex items-center gap-2">
@@ -103,36 +113,73 @@ const RecipeDetail = () => {
           </div>
         </div>
         <Heart className="text-muted-foreground cursor-pointer ml-auto" />
-        {recipe.userId === Number(user.id) && (
-          <div className="flex  gap-2">
-            <Button
-              className="ml-4 flex items-center justify-center"
-              size="icon"
-            >
-              <Pencil />
-            </Button>
-            <Button
-              className="ml-4 flex items-center justify-center"
-              size="icon"
-              onClick={openDialog}
-            >
-              <Trash2 />
-            </Button>
-            <AlertDialogDelete
-              open={isDialogOpen}
-              onOpenChange={setIsDialogOpen}
-              onConfirm={() => {
-                handleDelete();
-                closeDialog();
-              }}
-            />
+        {user && (
+          <div className="flex gap-2">
+            {/* Si es usuario común y es el propietario, muestra Editar y Eliminar */}
+            {user.role === "Common" && recipe.userId === Number(user.id) && (
+              <>
+                <Button
+                  className="ml-4 flex items-center justify-center"
+                  size="icon"
+                >
+                  <Pencil /> {/* Botón de Editar */}
+                </Button>
+                <Button
+                  className="ml-4 flex items-center justify-center"
+                  size="icon"
+                  onClick={openDialog}
+                >
+                  <Trash2 /> {/* Botón de Eliminar */}
+                </Button>
+              </>
+            )}
+
+            {/* Si es Admin o Moderador, muestra solo Eliminar */}
+            {["Admin", "Moderator"].includes(user.role) &&
+            recipe.userId === Number(user.id) ? (
+              <div className="flex gap-2">
+                <Button
+                  className="ml-4 flex items-center justify-center"
+                  size="icon"
+                >
+                  <Pencil /> {/* Botón de Editar */}
+                </Button>
+                <Button
+                  className="ml-4 flex items-center justify-center"
+                  size="icon"
+                  onClick={openDialog}
+                >
+                  <Trash2 /> {/* Botón de Eliminar */}
+                </Button>
+              </div>
+            ) : (
+              ["Admin", "Moderator"].includes(user.role) && (
+                <Button
+                  className="ml-4 flex items-center justify-center"
+                  size="icon"
+                  onClick={openDialog}
+                >
+                  <Trash2 /> {/* Botón de Eliminar */}
+                </Button>
+              )
+            )}
           </div>
         )}
+
+        <AlertDialogDelete
+          open={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          onConfirm={() => {
+            handleDelete();
+            closeDialog();
+          }}
+        />
       </div>
 
       <p>
         <Link to="/user-profile/:id" className="font-medium underline">
-          {/* Autor de la receta:{" "}  hay que modificar el metodo en el back si queremos obtener el autor de la receta */}
+          Autor de la receta:{" "}
+          {/*hay que modificar el metodo en el back si queremos obtener el autor de la receta, actualmente solo tenemos el id del propietario de la receta, de paso agregaria algun avatar en donde se muestre la foto del propietario de la receta que si lo tocas te lleve al perfil del usuario */}
         </Link>
         <span className="text-muted-foreground italic">
           &ldquo;{recipe.description}&rdquo;
@@ -157,28 +204,6 @@ const RecipeDetail = () => {
 
           <h3 className="font-semibold">Instrucciones</h3>
           <p>{recipe.instructions}</p>
-          {/* <ul className="list-disc ml-5">
-            <li>
-              Cocina los 400g de spaghetti en abundante agua con sal hasta que
-              estén al dente. Guarda un poco del agua de cocción.
-            </li>
-            <li>
-              En una sartén grande, cocina la panceta o el guanciale a fuego
-              medio hasta que estén dorados y crujientes.
-            </li>
-            <li>
-              En un bol aparte, bate los 4 huevos y añade los 100g de queso
-              pecorino y los 100g de queso parmesano rallados.
-            </li>
-            <li>
-              Una vez que la pasta esté lista y escurrida, añádela directamente
-              a la sartén con la panceta/guanciale.
-            </li>
-            <li>
-              Retira la sartén del fuego y añade la mezcla de huevo y queso a la
-              pasta caliente.
-            </li>
-          </ul> */}
         </div>
       </div>
 

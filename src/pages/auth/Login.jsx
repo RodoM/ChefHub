@@ -41,9 +41,8 @@ function Login() {
     }
 
     const response = await login(email, password);
-    console.log(response);
+
     if (response === null) {
-      console.log(response);
       errorsForm.Authentication = "Email y/o contraseña incorrectos";
       setErrors(errorsForm);
       return;

@@ -71,8 +71,7 @@ const RecipeContextProvider = ({ children }) => {
   };
 
   const CreateRecipe = async (recipe) => {
-    console.log(getToken());
-    console.log(recipe);
+ 
     try {
       const response = await fetch(URL + "Recipe/CreateRecipe", {
         method: "POST",
