@@ -120,12 +120,38 @@ const RecipeContextProvider = ({ children }) => {
     }
   };
 
+  const createComment = async (recipeId, comment) => {
+    try {
+      const response = await fetch(URL + `Comment/CreateComment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+          accept: "*/*",
+        },
+        body: JSON.stringify({ text: comment.text, score: Number(comment.score), recipeId: Number(recipeId) }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  };
+
   const data = {
     GetAllRecipes,
     GetRecipeById,
     GetRecipesByUser,
     CreateRecipe,
     DeleteRecipe,
+    createComment,
   };
 
   return (
