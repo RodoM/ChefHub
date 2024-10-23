@@ -10,7 +10,7 @@ import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useState } from "react";
 
 const Home = () => {
-  const { token, user } = useContext(AuthenticationContext);
+  const { token } = useContext(AuthenticationContext);
   const { GetAllRecipes } = useContext(RecipeContext);
 
   const [recipes, setRecipes] = useState([]);
