@@ -33,6 +33,12 @@ const RecipeDetail = () => {
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
 
+  const [refetch, setRefetch] = useState(false);
+
+  const handleRefetch = () => {
+    setRefetch(!refetch);
+  };
+
   useEffect(() => {
     const getRecipeById = async () => {
       const recipe = await GetRecipeById(id);
@@ -42,7 +48,7 @@ const RecipeDetail = () => {
       }
     };
     getRecipeById();
-  }, [id, GetRecipeById]);
+  }, [id, GetRecipeById, refetch]);
 
   const handleDelete = async () => {
     const result = await DeleteRecipe(id);
@@ -212,7 +218,7 @@ const RecipeDetail = () => {
 
         <CommentForm submitComment={submitComment} />
 
-        <CommentList comments={recipe.comments} />
+        <CommentList recipeId={id} comments={recipe.comments} handleRefetch={handleRefetch} />
       </div>
     </div>
   );

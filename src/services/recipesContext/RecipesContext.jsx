@@ -144,6 +144,28 @@ const RecipeContextProvider = ({ children }) => {
     }
   };
 
+  const deleteComment = async (commentId, recipeId) => {
+    try {
+      const response = await fetch(URL + `Comment/${commentId}?recipeId=${recipeId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+          accept: "*/*",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
   const data = {
     GetAllRecipes,
     GetRecipeById,
@@ -151,6 +173,7 @@ const RecipeContextProvider = ({ children }) => {
     CreateRecipe,
     DeleteRecipe,
     createComment,
+    deleteComment,
   };
 
   return (
