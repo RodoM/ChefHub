@@ -40,6 +40,7 @@ const AuthenticationContextProvider = ({ children }) => {
         id: decoded.sub,
         fullName: decoded.fullName,
         photo: decoded.photo,
+        role: decoded.role, //admin, moderator, common
       };
       setUser(user);
 

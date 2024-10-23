@@ -98,7 +98,35 @@ const RecipeContextProvider = ({ children }) => {
     }
   };
 
-  const data = { GetAllRecipes, GetRecipeById, GetRecipesByUser, CreateRecipe };
+  const DeleteRecipe = async (recipeId) => {
+    try {
+      const response = await fetch(URL + `Recipe/${recipeId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+          accept: "*/*",
+        },
+      });
+      console.log(response);
+      if (response.status === 204) {
+        return true;
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  const data = {
+    GetAllRecipes,
+    GetRecipeById,
+    GetRecipesByUser,
+    CreateRecipe,
+    DeleteRecipe,
+  };
 
   return (
     <RecipeContext.Provider value={data}>{children}</RecipeContext.Provider>

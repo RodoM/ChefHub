@@ -15,11 +15,22 @@ import { Link, useParams } from "react-router-dom";
 import { useContext, useState } from "react";
 import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useEffect } from "react";
+import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
+import { Pencil, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import AlertDialogDelete from "@/components/alertDialogDelete/AlertDialogDelete";
 
 const RecipeDetail = () => {
+  const { user } = useContext(AuthenticationContext);
   const { id } = useParams();
-  const { GetRecipeById } = useContext(RecipeContext);
+  const { GetRecipeById, DeleteRecipe } = useContext(RecipeContext);
   const [recipe, setRecipe] = useState(null);
+  const navigate = useNavigate();
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
+
   useEffect(() => {
     const getRecipeById = async () => {
       const recipe = await GetRecipeById(id);
@@ -30,6 +41,13 @@ const RecipeDetail = () => {
     };
     getRecipeById();
   }, [id, GetRecipeById]);
+
+  const handleDelete = async () => {
+    const result = await DeleteRecipe(id);
+    if (result) {
+      navigate("/", { replace: true });
+    }
+  };
 
   const recipeScore = (comments) => {
     if (comments.length === 0) return "SC";
@@ -42,9 +60,11 @@ const RecipeDetail = () => {
   };
 
   if (!recipe) {
-    return <div className="h-screen flex justify-center items-center">
-      <LoaderCircle size={64} className="animate-spin" />
-    </div>;
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <LoaderCircle size={64} className="animate-spin" />
+      </div>
+    );
   }
   return (
     <div className="flex flex-col gap-4 my-4">
@@ -69,6 +89,31 @@ const RecipeDetail = () => {
           </div>
         </div>
         <Heart className="text-muted-foreground cursor-pointer ml-auto" />
+        {recipe.userId === Number(user.id) && (
+          <div className="flex  gap-2">
+            <Button
+              className="ml-4 flex items-center justify-center"
+              size="icon"
+            >
+              <Pencil />
+            </Button>
+            <Button
+              className="ml-4 flex items-center justify-center"
+              size="icon"
+              onClick={openDialog}
+            >
+              <Trash2 />
+            </Button>
+            <AlertDialogDelete
+              open={isDialogOpen}
+              onOpenChange={setIsDialogOpen}
+              onConfirm={() => {
+                handleDelete();
+                closeDialog();
+              }}
+            />
+          </div>
+        )}
       </div>
 
       <p>
