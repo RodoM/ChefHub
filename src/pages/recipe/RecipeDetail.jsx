@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CommentForm } from "@/components/comment/CommentForm";
 import { CommentList } from "@/components/comment/CommentList";
-import AlertDialogDelete from "@/components/alertDialogDelete/AlertDialogDelete";
+import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
 
 const RecipeDetail = () => {
   const { user } = useContext(AuthenticationContext);
@@ -172,13 +172,14 @@ const RecipeDetail = () => {
           </div>
         )}
 
-        <AlertDialogDelete
+        <ConfirmDialog
           open={isDialogOpen}
           onOpenChange={setIsDialogOpen}
           onConfirm={() => {
             handleDelete();
             closeDialog();
           }}
+          description={"¿Estás seguro de que deseas eliminar esta receta?"}
         />
       </div>
 

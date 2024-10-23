@@ -9,14 +9,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-const AlertDialogDelete = ({ open, onOpenChange, onConfirm }) => {
+
+const ConfirmDialog = ({ open, onOpenChange, onConfirm, description }) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estás completamente seguro?</AlertDialogTitle>
           <AlertDialogDescription>
-            Esta acción no se puede deshacer.
+            {description}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -28,4 +29,4 @@ const AlertDialogDelete = ({ open, onOpenChange, onConfirm }) => {
   );
 };
 
-export default AlertDialogDelete;
+export default ConfirmDialog;
