@@ -88,7 +88,7 @@ const CreateRecipe = () => {
       newErrors.urlImage = "La imagen es requerida";
       imageRef.current.focus();
       setErrors(newErrors);
-      return;
+      return;   
     }
     if (description.trim() === "") {
       newErrors.description = "La descripcion es requerida";
