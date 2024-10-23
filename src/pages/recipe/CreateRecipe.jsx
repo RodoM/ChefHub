@@ -5,7 +5,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useContext } from "react";
-import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 
 const CreateRecipe = () => {
@@ -136,7 +135,6 @@ const CreateRecipe = () => {
   };
   return (
     <div className="flex justify-center w-full mt-10 p-8 ">
-      <Toaster />
       <form className="w-full max-w-7xl  " onSubmit={handleSubmit}>
         <h1 className="text-left font-bold text-2xl mb-8">Nueva Receta</h1>
 

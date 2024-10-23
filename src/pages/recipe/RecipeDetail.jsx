@@ -1,30 +1,22 @@
-import { LoaderCircle, Star, Heart, Clock, Flame } from "lucide-react";
+import { useContext, useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
+import { RecipeContext } from "@/services/recipesContext/RecipesContext";
+import { LoaderCircle, Star, Heart, Clock, Flame, Pencil, Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { CommentForm } from "@/components/comment/CommentForm";
 import { CommentList } from "@/components/comment/CommentList";
-import { Link, useParams } from "react-router-dom";
-import { useContext, useState } from "react";
-import { RecipeContext } from "@/services/recipesContext/RecipesContext";
-import { useEffect } from "react";
-import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
-import { Pencil, Trash2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import AlertDialogDelete from "@/components/alertDialogDelete/AlertDialogDelete";
 
 const RecipeDetail = () => {
   const { user } = useContext(AuthenticationContext);
   const { id } = useParams();
-  const { GetRecipeById, DeleteRecipe } = useContext(RecipeContext);
+  const { GetRecipeById, DeleteRecipe, createComment } = useContext(RecipeContext);
   const [recipe, setRecipe] = useState(null);
+
   const navigate = useNavigate();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -59,6 +51,27 @@ const RecipeDetail = () => {
     return averageScore.toFixed(2);
   };
 
+  const { toast } = useToast();
+
+  const submitComment = async (comment) => {
+    const response = await createComment(id, comment);
+    if (response.success) {
+      setRecipe((prevRecipe) => ({
+        ...prevRecipe,
+        comments: [...prevRecipe.comments, response.data],
+      }));
+      toast({
+        title: "Comentario creado exitosamente",
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: "Error al crear comentario",
+        variant: "destructive",
+      });
+    }
+  };
+
   if (!recipe) {
     return (
       <div className="h-screen flex justify-center items-center">
@@ -66,6 +79,7 @@ const RecipeDetail = () => {
       </div>
     );
   }
+  
   return (
     <div className="flex flex-col gap-4 my-4">
       <div className="flex items-center gap-2">
@@ -171,26 +185,7 @@ const RecipeDetail = () => {
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold">Comentarios</h2>
 
-        <Textarea
-          placeholder="Escribe tu comentario aquí..."
-          className="resize-none"
-        />
-
-        <div className="flex justify-end gap-2">
-          <Select>
-            <SelectTrigger className="w-28">
-              <SelectValue placeholder="Puntaje" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">1</SelectItem>
-              <SelectItem value="2">2</SelectItem>
-              <SelectItem value="3">3</SelectItem>
-              <SelectItem value="4">4</SelectItem>
-              <SelectItem value="5">5</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button>Publicar comentario</Button>
-        </div>
+        <CommentForm submitComment={submitComment} />
 
         <CommentList comments={recipe.comments} />
       </div>
