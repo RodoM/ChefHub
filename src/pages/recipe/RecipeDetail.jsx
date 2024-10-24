@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { CommentForm } from "@/components/comment/CommentForm";
 import { CommentList } from "@/components/comment/CommentList";
 import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
+import { isValidURL } from "@/helper/ValidateUrl";
 
 const RecipeDetail = () => {
   const { user } = useContext(AuthenticationContext);
@@ -171,7 +172,6 @@ const RecipeDetail = () => {
             )}
           </div>
         )}
-
         <ConfirmDialog
           open={isDialogOpen}
           onOpenChange={setIsDialogOpen}
@@ -182,16 +182,22 @@ const RecipeDetail = () => {
           description={"¿Estás seguro de que deseas eliminar esta receta?"}
         />
       </div>
-
-      <p>
-        <Link to="/user-profile/:id" className="font-medium underline">
-          Autor de la receta:{" "}
-          {/*hay que modificar el metodo en el back si queremos obtener el autor de la receta, actualmente solo tenemos el id del propietario de la receta, de paso agregaria algun avatar en donde se muestre la foto del propietario de la receta que si lo tocas te lleve al perfil del usuario */}
-        </Link>
-        <span className="text-muted-foreground italic">
-          &ldquo;{recipe.description}&rdquo;
-        </span>
-      </p>
+      <Link to={`/user-profile/${recipe.userResponse.id}`} className="font-medium max-w-max">
+        <div className="flex items-center gap-2">
+          <img
+            src={
+              isValidURL(recipe.userResponse.urlPhoto)
+                ? recipe.userResponse.urlPhoto
+                : "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png"
+            }
+            alt="foto de perfil"
+            className="w-12 h-12 bg-muted-foreground rounded-full"/>
+          <p className="font-semibold">{recipe.userResponse.fullName}</p>
+        </div>
+      </Link>
+      <span className="text-muted-foreground italic">
+        &ldquo;{recipe.description}&rdquo;
+      </span>
 
       <div className="flex gap-2">
         {recipe.categories.map((categorie, index) => (
@@ -219,7 +225,11 @@ const RecipeDetail = () => {
 
         <CommentForm submitComment={submitComment} />
 
-        <CommentList recipeId={id} comments={recipe.comments} handleRefetch={handleRefetch} />
+        <CommentList
+          recipeId={id}
+          comments={recipe.comments}
+          handleRefetch={handleRefetch}
+        />
       </div>
     </div>
   );
