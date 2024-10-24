@@ -56,10 +56,12 @@ const App = () => {
           ),
         },
         {
-          path: "edit-user/:id",
+          path: "edit-user",
           element: (
             <UserProtected>
-              <EditUser />
+              <UserContextProvider>
+                <EditUser />
+              </UserContextProvider>
             </UserProtected>
           ),
         },
