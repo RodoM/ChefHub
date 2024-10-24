@@ -1,7 +1,7 @@
 import { RecipeCard } from "@/components/recipe/RecipeCard";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "@/services/userContext/UserContext";
 import { useContext, useEffect, useState } from "react";
 import { RecipeContext } from "@/services/recipesContext/RecipesContext";
@@ -41,10 +41,21 @@ const UserProfile = () => {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">{userProfile?.fullName}</h2>
           {user && userProfile.id === Number(user.id) && (
-            <Button className="ml-4 flex items-center justify-center">
-              <span className="hidden md:block">Editar Perfil</span>
-              <Pencil className="md:ml-2 block md:hidden" />
-            </Button>
+            <Link
+              to="/edit-user"
+              state={{
+                id: id,
+                urlPhoto: userProfile.urlPhoto,
+                fullName: userProfile.fullName,
+                email: userProfile.email,
+                description: userProfile.description,
+              }}
+            >
+              <Button className="ml-4 flex items-center justify-center">
+                <span className="hidden md:block">Editar Perfil</span>
+                <Pencil className="md:ml-2 block md:hidden" />
+              </Button>
+            </Link>
           )}
         </div>
 
@@ -64,7 +75,7 @@ const UserProfile = () => {
         </div>
 
         <div className="flex gap-4 mb-8">
-          <Button>Mis Recetas (2)</Button>
+          <Button>Mis Recetas ({recipes.length})</Button>
           <Button variant="outline">Favoritas (10)</Button>
         </div>
 

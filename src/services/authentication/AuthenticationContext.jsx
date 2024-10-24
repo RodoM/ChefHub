@@ -59,7 +59,7 @@ const AuthenticationContextProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
-  const data = { token, login, logout, user };
+  const data = { token, login, logout, user, setUser };
   return (
     <AuthenticationContext.Provider value={data}>
       {children}
