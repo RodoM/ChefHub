@@ -48,6 +48,7 @@ const RecipeContextProvider = ({ children }) => {
       return null;
     }
   };
+
   const GetRecipesByUser = async (idUser) => {
     try {
       const response = await fetch(URL + `Recipe/GetRecipesByUser/${idUser}`, {
@@ -69,6 +70,28 @@ const RecipeContextProvider = ({ children }) => {
       return null;
     }
   };
+
+  const GetUserFavorites = async (idUser) => {
+    try {
+      const response = await fetch(URL + `Favorite/GetAllUserFavorites/${idUser}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "*/*",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
 
   const CreateRecipe = async (recipe) => {
  
@@ -195,6 +218,7 @@ const RecipeContextProvider = ({ children }) => {
     GetAllRecipes,
     GetRecipeById,
     GetRecipesByUser,
+    GetUserFavorites,
     CreateRecipe,
     DeleteRecipe,
     createComment,
