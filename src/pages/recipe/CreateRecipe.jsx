@@ -248,7 +248,7 @@ const CreateRecipe = () => {
                 Seleccione la dificultad de la receta
               </option>
               <option value="0">Fácil</option>
-              <option value="1">Medio</option>
+              <option value="1">Intermedio</option>
               <option value="2">Difícil</option>
             </select>
             {errors.difficulty && (

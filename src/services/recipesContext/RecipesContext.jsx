@@ -142,6 +142,27 @@ const RecipeContextProvider = ({ children }) => {
       return null;
     }
   };
+  const UpdateRecipe = async (recipeId,recipeRequest) => {
+    try {
+      const response = await fetch(URL + `Recipe/${recipeId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+          accept: "*/*",
+        },
+        body: JSON.stringify(recipeRequest),
+      });
+      if (response.status === 204) {
+        return true;
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
 
   const createComment = async (recipeId, comment) => {
     try {
@@ -280,6 +301,7 @@ const RecipeContextProvider = ({ children }) => {
     modifyComment,
     AddRecipeToFavorites,
     DeleteRecipeFromFavorites,
+    UpdateRecipe,
   };
 
   return (

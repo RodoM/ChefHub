@@ -40,7 +40,7 @@ const App = () => {
           ),
         },
         {
-          path: "edit-recipe/:id",
+          path: "edit-recipe",
           element: (
             <UserProtected>
               <EditRecipe />
