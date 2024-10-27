@@ -73,13 +73,16 @@ const RecipeContextProvider = ({ children }) => {
 
   const GetUserFavorites = async (idUser) => {
     try {
-      const response = await fetch(URL + `Favorite/GetAllUserFavorites/${idUser}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "*/*",
-        },
-      });
+      const response = await fetch(
+        URL + `Favorite/GetAllUserFavorites/${idUser}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "*/*",
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -91,10 +94,9 @@ const RecipeContextProvider = ({ children }) => {
       console.error(error);
       return null;
     }
-  }
+  };
 
   const CreateRecipe = async (recipe) => {
- 
     try {
       const response = await fetch(URL + "Recipe/CreateRecipe", {
         method: "POST",
@@ -130,7 +132,6 @@ const RecipeContextProvider = ({ children }) => {
           accept: "*/*",
         },
       });
-      console.log(response);
       if (response.status === 204) {
         return true;
       }
@@ -151,7 +152,11 @@ const RecipeContextProvider = ({ children }) => {
           Authorization: `Bearer ${getToken()}`,
           accept: "*/*",
         },
-        body: JSON.stringify({ text: comment.text, score: Number(comment.score), recipeId: Number(recipeId) }),
+        body: JSON.stringify({
+          text: comment.text,
+          score: Number(comment.score),
+          recipeId: Number(recipeId),
+        }),
       });
 
       if (!response.ok) {
@@ -169,14 +174,17 @@ const RecipeContextProvider = ({ children }) => {
 
   const deleteComment = async (commentId, recipeId) => {
     try {
-      const response = await fetch(URL + `Comment/${commentId}?recipeId=${recipeId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getToken()}`,
-          accept: "*/*",
-        },
-      });
+      const response = await fetch(
+        URL + `Comment/${commentId}?recipeId=${recipeId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getToken()}`,
+            accept: "*/*",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -198,7 +206,11 @@ const RecipeContextProvider = ({ children }) => {
           Authorization: `Bearer ${getToken()}`,
           accept: "*/*",
         },
-        body: JSON.stringify({ text: text, score: Number(score), recipeId: Number(recipeId) }),
+        body: JSON.stringify({
+          text: text,
+          score: Number(score),
+          recipeId: Number(recipeId),
+        }),
       });
 
       if (!response.ok) {
@@ -213,7 +225,49 @@ const RecipeContextProvider = ({ children }) => {
       return null;
     }
   };
+  const AddRecipeToFavorites = async (favoriteRequest) => {
+    try {
+      const response = await fetch(URL + `Favorite/AddToFavorites`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+          accept: "*/*",
+        },
+        body: JSON.stringify(favoriteRequest),
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
 
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+  const DeleteRecipeFromFavorites = async (recipeId) => {
+    try {
+      const response = await fetch(URL + `Favorite/${recipeId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+          accept: "*/*",
+        },
+      });
+      if (response.status === 204) {
+        return true;
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
   const data = {
     GetAllRecipes,
     GetRecipeById,
@@ -224,6 +278,8 @@ const RecipeContextProvider = ({ children }) => {
     createComment,
     deleteComment,
     modifyComment,
+    AddRecipeToFavorites,
+    DeleteRecipeFromFavorites,
   };
 
   return (

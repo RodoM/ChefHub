@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { isValidURL } from "@/helper/ValidateUrl";
 import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
+import { LoadContext } from "@/services/loadContext/LoadContext";
 const UserProfile = () => {
   const { id } = useParams();
   const { user } = useContext(AuthenticationContext);
@@ -16,6 +17,7 @@ const UserProfile = () => {
   const [recipes, setRecipes] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [currentTab, setCurrentTab] = useState("recipes");
+  const { load } = useContext(LoadContext);
   useEffect(() => {
     const getUserById = async () => {
       const user = await GetUserById(id);
@@ -43,7 +45,7 @@ const UserProfile = () => {
 
     getRecipesByUser();
     getUserFavorites();
-  }, [id, GetRecipesByUser, GetUserFavorites]);
+  }, [id, GetRecipesByUser, GetUserFavorites, load]);
 
   if (!userProfile) return <div>Loading...</div>;
   return (
@@ -96,7 +98,7 @@ const UserProfile = () => {
             variant={currentTab === "favorites" ? "default" : "outline"}
             onClick={() => setCurrentTab("favorites")}
           >
-            Favoritas (10)
+            Favoritas ({favorites.length})
           </Button>
         </div>
 
@@ -108,9 +110,7 @@ const UserProfile = () => {
               ))}
             </div>
           ) : (
-            <p className="text-center text-muted-foreground">
-              Sin recetas
-            </p>
+            <p className="text-center text-muted-foreground">Sin recetas</p>
           ))}
 
         {currentTab === "favorites" &&
@@ -121,9 +121,7 @@ const UserProfile = () => {
               ))}
             </div>
           ) : (
-            <p className="text-center text-muted-foreground">
-              Sin favoritas
-            </p>
+            <p className="text-center text-muted-foreground">Sin favoritas</p>
           ))}
       </div>
     </div>

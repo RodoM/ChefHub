@@ -19,15 +19,22 @@ import { CommentForm } from "@/components/comment/CommentForm";
 import { CommentList } from "@/components/comment/CommentList";
 import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
 import { isValidURL } from "@/helper/ValidateUrl";
+import { FaHeart } from "react-icons/fa";
 
 const RecipeDetail = () => {
   const { user } = useContext(AuthenticationContext);
 
   const { id } = useParams();
-  const { GetRecipeById, DeleteRecipe, createComment } =
-    useContext(RecipeContext);
+  const {
+    GetRecipeById,
+    DeleteRecipe,
+    createComment,
+    GetUserFavorites,
+    AddRecipeToFavorites,
+    DeleteRecipeFromFavorites,
+  } = useContext(RecipeContext);
   const [recipe, setRecipe] = useState(null);
-
+  const [isFavorite, setIsFavorite] = useState(false);
   const navigate = useNavigate();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -57,6 +64,52 @@ const RecipeDetail = () => {
       navigate("/", { replace: true });
     }
   };
+  const handleAddToFavorites = async () => {
+    const result = await AddRecipeToFavorites({
+      recipeId: id,
+      favoriteType: 0, //dijimos de agregar los favoritos a una sola lista de favoritos asi no nos complicamos
+    });
+    if (result) {
+      toast({
+        title: "Favorito agregado exitosamente",
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: "Error al agregar el favorito",
+        variant: "destructive",
+      });
+    }
+  };
+  const handleDeleteFavorite = async () => {
+    const response = await DeleteRecipeFromFavorites(id);
+    if (response) {
+      toast({
+        title: "Favorito eliminado exitosamente",
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: "Error al eliminar el favorito",
+        variant: "destructive",
+      });
+    }
+  };
+  useEffect(() => {
+    if (!user) return;
+    const getFavorites = async () => {
+      const favorites = await GetUserFavorites(user.id);
+
+      if (favorites) {
+        setIsFavorite(
+          favorites.data.some(
+            (favorite) => favorite.recipeResponse.id === Number(id)
+          )
+        );
+      }
+    };
+    getFavorites();
+  }, [GetUserFavorites, id, user, handleAddToFavorites, handleDeleteFavorite]);
 
   const recipeScore = (comments) => {
     if (comments.length === 0) return "SC";
@@ -119,7 +172,20 @@ const RecipeDetail = () => {
             </span>
           </div>
         </div>
-        <Heart className="text-muted-foreground cursor-pointer ml-auto" />
+        {user ? (
+          !isFavorite ? (
+            <Heart
+              className="text-muted-foreground cursor-pointer ml-auto"
+              onClick={handleAddToFavorites}
+            />
+          ) : (
+            <FaHeart
+              className="w-[24px] h-[24px] cursor-pointer ml-auto"
+              onClick={handleDeleteFavorite}
+            />
+          )
+        ) : null}
+
         {user && (
           <div className="flex gap-2">
             {/* Si es usuario común y es el propietario, muestra Editar y Eliminar */}
@@ -182,7 +248,10 @@ const RecipeDetail = () => {
           description={"¿Estás seguro de que deseas eliminar esta receta?"}
         />
       </div>
-      <Link to={`/user-profile/${recipe.userResponse.id}`} className="font-medium max-w-max">
+      <Link
+        to={`/user-profile/${recipe.userResponse.id}`}
+        className="font-medium max-w-max"
+      >
         <div className="flex items-center gap-2">
           <img
             src={
@@ -191,7 +260,8 @@ const RecipeDetail = () => {
                 : "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png"
             }
             alt="foto de perfil"
-            className="w-12 h-12 bg-muted-foreground rounded-full"/>
+            className="w-12 h-12 bg-muted-foreground rounded-full"
+          />
           <p className="font-semibold">{recipe.userResponse.fullName}</p>
         </div>
       </Link>
@@ -222,8 +292,7 @@ const RecipeDetail = () => {
 
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold">Comentarios</h2>
-
-        <CommentForm submitComment={submitComment} />
+        {user && <CommentForm submitComment={submitComment} />}
 
         <CommentList
           recipeId={id}
