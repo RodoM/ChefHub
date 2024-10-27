@@ -87,7 +87,7 @@ const CreateRecipe = () => {
       newErrors.urlImage = "La imagen es requerida";
       imageRef.current.focus();
       setErrors(newErrors);
-      return;   
+      return;
     }
     if (description.trim() === "") {
       newErrors.description = "La descripcion es requerida";
@@ -223,7 +223,7 @@ const CreateRecipe = () => {
               <p className="text-red-500">{errors.categories}</p>
             )}
           </div>
-          <div className="">
+          {/* <div className="">
             <Label className="block mb-2">Dificultad</Label>
             <Input
               className="w-full"
@@ -232,6 +232,25 @@ const CreateRecipe = () => {
               ref={difficultyRef}
               value={difficulty}
             />
+            {errors.difficulty && (
+              <p className="text-red-500">{errors.difficulty}</p>
+            )}
+          </div> */}
+          <div className="">
+            <Label className="block mb-2">Dificultad</Label>
+            <select
+              className="w-full border-gray-300 rounded-md"
+              onChange={(e) => setDifficulty(e.target.value)} 
+              ref={difficultyRef} 
+              value={difficulty} 
+            >
+              <option value="" disabled>
+                Seleccione la dificultad de la receta
+              </option>
+              <option value="0">Fácil</option>
+              <option value="1">Medio</option>
+              <option value="2">Difícil</option>
+            </select>
             {errors.difficulty && (
               <p className="text-red-500">{errors.difficulty}</p>
             )}
