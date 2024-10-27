@@ -21,12 +21,12 @@ export const RecipeCard = ({
   comments,
 }) => {
   const recipeScore = (comments) => {
-    if (comments.length === 0) return "SC";
-    const totalScore = comments.reduce(
+    if (comments?.length === 0) return "SC";
+    const totalScore = comments?.reduce(
       (acc, comment) => acc + comment.score,
       0
     );
-    const averageScore = totalScore / comments.length;
+    const averageScore = totalScore / comments?.length;
     return averageScore.toFixed(2);
   };
 

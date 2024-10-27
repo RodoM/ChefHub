@@ -11,9 +11,11 @@ const UserProfile = () => {
   const { id } = useParams();
   const { user } = useContext(AuthenticationContext);
   const { GetUserById } = useContext(UserContext);
-  const { GetRecipesByUser } = useContext(RecipeContext);
+  const { GetRecipesByUser, GetUserFavorites } = useContext(RecipeContext);
   const [userProfile, setUserProfile] = useState(null);
   const [recipes, setRecipes] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [currentTab, setCurrentTab] = useState("recipes");
   useEffect(() => {
     const getUserById = async () => {
       const user = await GetUserById(id);
@@ -31,8 +33,17 @@ const UserProfile = () => {
         setRecipes(recipes.data);
       }
     };
+
+    const getUserFavorites = async () => {
+      const favorites = await GetUserFavorites(id);
+      if (favorites) {
+        setFavorites(favorites.data);
+      }
+    };
+
     getRecipesByUser();
-  }, [id, GetRecipesByUser]);
+    getUserFavorites();
+  }, [id, GetRecipesByUser, GetUserFavorites]);
 
   if (!userProfile) return <div>Loading...</div>;
   return (
@@ -75,19 +86,45 @@ const UserProfile = () => {
         </div>
 
         <div className="flex gap-4 mb-8">
-          <Button>Mis Recetas ({recipes.length})</Button>
-          <Button variant="outline">Favoritas (10)</Button>
+          <Button
+            variant={currentTab === "recipes" ? "default" : "outline"}
+            onClick={() => setCurrentTab("recipes")}
+          >
+            Mis Recetas ({recipes.length})
+          </Button>
+          <Button
+            variant={currentTab === "favorites" ? "default" : "outline"}
+            onClick={() => setCurrentTab("favorites")}
+          >
+            Favoritas (10)
+          </Button>
         </div>
 
-        {recipes.length > 0 ? (
-          <div className="grid gap-4">
-            {recipes.map((recipe, index) => (
-              <RecipeCard {...recipe} key={index} />
-            ))}
-          </div>
-        ) : (
-          <p>No tienes Recetas</p>
-        )}
+        {currentTab === "recipes" &&
+          (recipes.length > 0 ? (
+            <div className="grid gap-4">
+              {recipes.map((recipe, index) => (
+                <RecipeCard {...recipe} key={index} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-muted-foreground">
+              Sin recetas
+            </p>
+          ))}
+
+        {currentTab === "favorites" &&
+          (favorites.length > 0 ? (
+            <div className="grid gap-4">
+              {favorites.map((recipe, index) => (
+                <RecipeCard {...recipe.recipeResponse} key={index} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-muted-foreground">
+              Sin favoritas
+            </p>
+          ))}
       </div>
     </div>
   );
