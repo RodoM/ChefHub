@@ -21,6 +21,7 @@ import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
 import { isValidURL } from "@/helper/ValidateUrl";
 import { FaHeart } from "react-icons/fa";
 
+
 const RecipeDetail = () => {
   const { user } = useContext(AuthenticationContext);
 
@@ -163,7 +164,7 @@ const RecipeDetail = () => {
             <Separator orientation="vertical" className="h-4" />
             <span className="flex items-center gap-2 text-muted-foreground">
               <Clock />
-              {recipe.preparationpreparationTime} minutos
+              {recipe.preparationTime} minutos
             </span>
             <Separator orientation="vertical" className="h-4" />
             <span className="flex items-center gap-2 text-muted-foreground">
@@ -189,34 +190,38 @@ const RecipeDetail = () => {
         {user && (
           <div className="flex gap-2">
             {/* Si es usuario común y es el propietario, muestra Editar y Eliminar */}
-            {user.role === "Common" && recipe.userId === Number(user.id) && (
-              <>
-                <Button
-                  className="ml-4 flex items-center justify-center"
-                  size="icon"
-                >
-                  <Pencil /> {/* Botón de Editar */}
-                </Button>
-                <Button
-                  className="ml-4 flex items-center justify-center"
-                  size="icon"
-                  onClick={openDialog}
-                >
-                  <Trash2 /> {/* Botón de Eliminar */}
-                </Button>
-              </>
-            )}
-
+            {user.role === "Common" &&
+              recipe.userResponse.id === Number(user.id) && (
+                <>
+                  <Link to="/edit-recipe" state={{id: recipe.id,title: recipe.title,urlImage: recipe.urlImage,description: recipe.description,ingredients: recipe.ingredients,instructions: recipe.instructions,categories: recipe.categories,difficulty: recipe.difficulty,preparationTime: recipe.preparationTime}}>
+                    <Button
+                      className="ml-4 flex items-center justify-center"
+                      size="icon"
+                    >
+                      <Pencil />
+                    </Button>
+                  </Link>
+                  <Button
+                    className="ml-4 flex items-center justify-center"
+                    size="icon"
+                    onClick={openDialog}
+                  >
+                    <Trash2 /> {/* Botón de Eliminar */}
+                  </Button>
+                </>
+              )}
             {/* Si es Admin o Moderador, muestra solo Eliminar */}
             {["Admin", "Moderator"].includes(user.role) &&
-            recipe.userId === Number(user.id) ? (
+            recipe.userResponse.id === Number(user.id) ? (
               <div className="flex gap-2">
-                <Button
-                  className="ml-4 flex items-center justify-center"
-                  size="icon"
-                >
-                  <Pencil /> {/* Botón de Editar */}
-                </Button>
+                <Link to="/edit-recipe" state={{id: recipe.id,title: recipe.title,urlImage: recipe.urlImage,description: recipe.description,ingredients: recipe.ingredients,instructions: recipe.instructions,categories: recipe.categories,difficulty: recipe.difficulty,preparationTime: recipe.preparationTime}}>
+                  <Button
+                    className="ml-4 flex items-center justify-center"
+                    size="icon"
+                  >
+                    <Pencil />
+                  </Button>
+                </Link>
                 <Button
                   className="ml-4 flex items-center justify-center"
                   size="icon"

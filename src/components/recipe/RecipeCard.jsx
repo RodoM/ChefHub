@@ -50,6 +50,7 @@ export const RecipeCard = ({
         title: "Favorito agregado exitosamente",
         variant: "success",
       });
+      handleLoad();
     } else {
       toast({
         title: "Error al agregar el favorito",
