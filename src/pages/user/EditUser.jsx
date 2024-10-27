@@ -61,7 +61,7 @@ const EditUser = () => {
     }
     const userRequest = {
       fullName: fullName,
-      email: email,
+      email: email != state.email ? email : null,
       urlPhoto: isValidURL(urlPhoto)
         ? urlPhoto
         : "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png",
