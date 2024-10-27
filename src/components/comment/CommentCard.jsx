@@ -63,7 +63,6 @@ export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
   const [text, setText] = useState(comment.text);
   const [score, setScore] = useState(comment.score);
 
-
   const handleModify = async () => {
     const result = await modifyComment(comment.id, text, score, recipeId);
     if (result) {
@@ -120,43 +119,43 @@ export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
             )}
           </>
         </CardHeader>
-        <CardContent className="flex justify-between gap-2 text-muted-foreground">
-          {edit ? (
-            <Textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              className="resize-none"
-            />
-          ) : (
-            <p>{comment.text}</p>
-          )}
-          {!edit ? (
-            <div className="flex items-center gap-2">
-              {canModify() && (
-                <button onClick={() => setEdit(true)}>
-                  <Pencil size={16} />
-                </button>
-              )}
-              {canDelete() && (
-                <button onClick={openDialog}>
-                  <Trash2 size={16} />
-                </button>
-              )}
-            </div>
-            ) :
-            (
+        {user && (
+          <CardContent className="flex justify-between gap-2 text-muted-foreground">
+            {edit ? (
+              <Textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                className="resize-none"
+              />
+            ) : (
+              <p>{comment.text}</p>
+            )}
+            {!edit ? (
+              <div className="flex items-center gap-2">
+                {canModify() && (
+                  <button onClick={() => setEdit(true)}>
+                    <Pencil size={16} />
+                  </button>
+                )}
+                {canDelete() && (
+                  <button onClick={openDialog}>
+                    <Trash2 size={16} />
+                  </button>
+                )}
+              </div>
+            ) : (
               <div className="flex items-center gap-2">
                 <button onClick={() => openDialog()}>
                   <Check size={16} />
                 </button>
-              
+
                 <button onClick={() => setEdit(false)}>
                   <X size={16} />
                 </button>
               </div>
-            )
-          }
-        </CardContent>
+            )}
+          </CardContent>
+        )}
       </Card>
 
       <ConfirmDialog
@@ -166,7 +165,11 @@ export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
           edit ? handleModify() : handleDelete();
           closeDialog();
         }}
-        description={edit ? "¿Estás seguro de que deseas modificar este comentario?" : "¿Estás seguro de que deseas eliminar este comentario?"}
+        description={
+          edit
+            ? "¿Estás seguro de que deseas modificar este comentario?"
+            : "¿Estás seguro de que deseas eliminar este comentario?"
+        }
       />
     </>
   );
