@@ -16,10 +16,31 @@ export const UserContextProvider = ({ children }) => {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        throw new Error(`Error: ${response.status} - ${response.statusText}`); 
       }
     } catch (error) {
       console.error(error);
+    }
+  };
+  const CreateUserModerator = async (userRequest) => {
+    try {
+      const response = await fetch("https://localhost:7021/api/AdminUser/CreateUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+          accept: "*/*",
+        },
+        body: JSON.stringify(userRequest),
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
     }
   };
 
@@ -68,7 +89,7 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
-  const data = { register, GetUserById, UpdateUser };
+  const data = { register, GetUserById, UpdateUser,CreateUserModerator };
 
   return <UserContext.Provider value={data}>{children}</UserContext.Provider>;
 };
