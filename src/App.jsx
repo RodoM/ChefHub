@@ -73,7 +73,9 @@ const App = () => {
           path: "create-moderator",
           element: (
             <AdminProtected>
-              <CreateModerator />
+              <UserContextProvider>
+                <CreateModerator />
+              </UserContextProvider>
             </AdminProtected>
           ),
         },

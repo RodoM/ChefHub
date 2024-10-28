@@ -10,7 +10,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { UserContext } from "@/services/userContext/UserContext";
+import { useToast } from "@/hooks/use-toast";
 
 const CreateModerator = () => {
   //Inicio definicion de variables de formulario para validacion de campos requeridos
@@ -32,6 +34,8 @@ const CreateModerator = () => {
   const [description, setDescription] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { CreateUserModerator } = useContext(UserContext);
+  const { toast } = useToast();
 
   //estados error
   const [errors, setErrors] = useState({});
@@ -39,22 +43,25 @@ const CreateModerator = () => {
   //fin definicion de variables de formulario para validacion de campos requeridos
 
   //funcion para enviar el formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
     //este es el nuevo usuario
     const newUser = {
       fullName,
       email,
       urlPhoto,
-      rol,
+      tipoRol: Number(rol),
       description,
       password,
     };
 
-    console.log(newUser);
-    alert("Usuario creado correctamente");
+    const success = await CreateUserModerator(newUser);
+    if (!success) {
+      showToast("Error al crear el usuario");
+      return;
+    }
+    showToast(" usuario creado con exito");
 
     //resetear formulario
     setFullName("");
@@ -67,6 +74,11 @@ const CreateModerator = () => {
 
     //resetar estados error
     setErrors({});
+  };
+  const showToast = (msg) => {
+    toast({
+      description: msg,
+    });
   };
 
   //funcion para validar los campos del formulario
@@ -188,9 +200,9 @@ const CreateModerator = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="admin">Administrador</SelectItem>
-                  <SelectItem value="moderator">Moderador</SelectItem>
-                  <SelectItem value="common">Usuario común</SelectItem>
+                  <SelectItem value="0">Administrador</SelectItem>
+                  <SelectItem value="1">Moderador</SelectItem>
+                  <SelectItem value="2">Usuario común</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
