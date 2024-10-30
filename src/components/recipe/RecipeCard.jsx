@@ -86,7 +86,7 @@ export const RecipeCard = ({
     <Card className="grid sm:grid-cols-[20%_auto]">
       <img
         src={urlImage}
-        alt="spaghetti"
+        alt={title}
         className="h-full object-cover rounded-l-lg"
       />
       <div>

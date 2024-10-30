@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useContext } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { isValidURL } from "@/helper/ValidateUrl";
 
 const CreateRecipe = () => {
   // estas son las definiciones de las referencias
@@ -76,6 +77,7 @@ const CreateRecipe = () => {
   const validateForm = () => {
     const newErrors = {};
 
+
     if (title.trim() === "") {
       newErrors.title = "El nombre es requerido";
       titleRef.current.focus();
@@ -84,6 +86,12 @@ const CreateRecipe = () => {
     }
     if (urlImage.trim() === "") {
       newErrors.urlImage = "La imagen es requerida";
+      imageRef.current.focus();
+      setErrors(newErrors);
+      return;
+    }
+    if (!isValidURL(urlImage)) {
+      newErrors.urlImage = "La URL de la imagen no es válida";
       imageRef.current.focus();
       setErrors(newErrors);
       return;
