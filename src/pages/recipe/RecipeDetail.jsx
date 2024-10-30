@@ -20,7 +20,7 @@ import { CommentList } from "@/components/comment/CommentList";
 import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
 import { isValidURL } from "@/helper/ValidateUrl";
 import { FaHeart } from "react-icons/fa";
-
+import { useScoreFormatter } from "@/hooks/UseScoreFormatter";
 
 const RecipeDetail = () => {
   const { user } = useContext(AuthenticationContext);
@@ -59,6 +59,8 @@ const RecipeDetail = () => {
     getRecipeById();
   }, [id, GetRecipeById, refetch]);
 
+  const score =
+    recipe?.comments.length > 0 ? useScoreFormatter(recipe.comments) : "SC";
   const handleDelete = async () => {
     const result = await DeleteRecipe(id);
     if (result) {
@@ -112,16 +114,6 @@ const RecipeDetail = () => {
     getFavorites();
   }, [GetUserFavorites, id, user, handleAddToFavorites, handleDeleteFavorite]);
 
-  const recipeScore = (comments) => {
-    if (comments.length === 0) return "SC";
-    const totalScore = comments.reduce(
-      (acc, comment) => acc + comment.score,
-      0
-    );
-    const averageScore = totalScore / comments.length;
-    return averageScore.toFixed(2);
-  };
-
   const { toast } = useToast();
 
   const submitComment = async (comment) => {
@@ -159,7 +151,7 @@ const RecipeDetail = () => {
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-2 text-muted-foreground">
               <Star />
-              {recipeScore(recipe.comments)}
+              {score}
             </span>
             <Separator orientation="vertical" className="h-4" />
             <span className="flex items-center gap-2 text-muted-foreground">
@@ -193,7 +185,20 @@ const RecipeDetail = () => {
             {user.role === "Common" &&
               recipe.userResponse.id === Number(user.id) && (
                 <>
-                  <Link to="/edit-recipe" state={{id: recipe.id,title: recipe.title,urlImage: recipe.urlImage,description: recipe.description,ingredients: recipe.ingredients,instructions: recipe.instructions,categories: recipe.categories,difficulty: recipe.difficulty,preparationTime: recipe.preparationTime}}>
+                  <Link
+                    to="/edit-recipe"
+                    state={{
+                      id: recipe.id,
+                      title: recipe.title,
+                      urlImage: recipe.urlImage,
+                      description: recipe.description,
+                      ingredients: recipe.ingredients,
+                      instructions: recipe.instructions,
+                      categories: recipe.categories,
+                      difficulty: recipe.difficulty,
+                      preparationTime: recipe.preparationTime,
+                    }}
+                  >
                     <Button
                       className="ml-4 flex items-center justify-center"
                       size="icon"
@@ -214,7 +219,20 @@ const RecipeDetail = () => {
             {["Admin", "Moderator"].includes(user.role) &&
             recipe.userResponse.id === Number(user.id) ? (
               <div className="flex gap-2">
-                <Link to="/edit-recipe" state={{id: recipe.id,title: recipe.title,urlImage: recipe.urlImage,description: recipe.description,ingredients: recipe.ingredients,instructions: recipe.instructions,categories: recipe.categories,difficulty: recipe.difficulty,preparationTime: recipe.preparationTime}}>
+                <Link
+                  to="/edit-recipe"
+                  state={{
+                    id: recipe.id,
+                    title: recipe.title,
+                    urlImage: recipe.urlImage,
+                    description: recipe.description,
+                    ingredients: recipe.ingredients,
+                    instructions: recipe.instructions,
+                    categories: recipe.categories,
+                    difficulty: recipe.difficulty,
+                    preparationTime: recipe.preparationTime,
+                  }}
+                >
                   <Button
                     className="ml-4 flex items-center justify-center"
                     size="icon"

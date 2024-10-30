@@ -104,7 +104,7 @@ const Register = () => {
       });
       navigate("/login", replace);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast({
         title: "Error al registrarse",
         variant: "destructive",

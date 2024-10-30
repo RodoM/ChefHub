@@ -107,7 +107,6 @@ const RecipeContextProvider = ({ children }) => {
         },
         body: JSON.stringify(recipe),
       });
-      console.log(response);
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -142,7 +141,7 @@ const RecipeContextProvider = ({ children }) => {
       return null;
     }
   };
-  const UpdateRecipe = async (recipeId,recipeRequest) => {
+  const UpdateRecipe = async (recipeId, recipeRequest) => {
     try {
       const response = await fetch(URL + `Recipe/${recipeId}`, {
         method: "PUT",

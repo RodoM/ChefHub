@@ -22,6 +22,7 @@ const Home = () => {
 
       if (recipes) {
         setRecipes(recipes.data.reverse());
+        return recipes;
       }
     };
     getAllRecipes();
@@ -66,9 +67,8 @@ const Home = () => {
           </Button>
         )}
       </div>
-      <section className="grid md:grid-cols-[75%_auto] gap-6">
+      <section className="grid">
         <RecipeList recipes={filteredRecipes} />
-        <RecipeFilter />
       </section>
     </div>
   );

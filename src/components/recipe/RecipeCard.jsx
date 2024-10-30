@@ -16,6 +16,7 @@ import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useToast } from "@/hooks/use-toast";
 import { FaHeart } from "react-icons/fa";
 import { LoadContext } from "@/services/loadContext/LoadContext";
+import { useScoreFormatter } from "@/hooks/UseScoreFormatter";
 export const RecipeCard = ({
   id,
   title,
@@ -30,16 +31,11 @@ export const RecipeCard = ({
     useContext(RecipeContext);
   const [isFavorite, setIsFavorite] = useState(false);
   const { toast } = useToast();
+
+  const score = comments.length > 0 ? useScoreFormatter(comments) : "SC";
+
   const { handleLoad } = useContext(LoadContext);
-  const recipeScore = (comments) => {
-    if (comments?.length === 0) return "SC";
-    const totalScore = comments?.reduce(
-      (acc, comment) => acc + comment.score,
-      0
-    );
-    const averageScore = totalScore / comments?.length;
-    return averageScore.toFixed(2);
-  };
+
   const handleAddToFavorites = async () => {
     const result = await AddRecipeToFavorites({
       recipeId: id,
@@ -123,7 +119,7 @@ export const RecipeCard = ({
             <Flame /> {difficulty}
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
-            <Star /> {recipeScore(comments)}
+            <Star /> {score}
           </div>
         </CardContent>
         <CardFooter>
