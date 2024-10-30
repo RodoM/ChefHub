@@ -53,7 +53,6 @@ const CreateRecipe = () => {
       preparationTime: parseInt(preparationTime),
     };
 
-    console.log(newRecipe);
     //  crear receta
     const success = await CreateRecipe(newRecipe);
     if (!success) {
@@ -240,9 +239,9 @@ const CreateRecipe = () => {
             <Label className="block mb-2">Dificultad</Label>
             <select
               className="w-full border-gray-300 rounded-md"
-              onChange={(e) => setDifficulty(e.target.value)} 
-              ref={difficultyRef} 
-              value={difficulty} 
+              onChange={(e) => setDifficulty(e.target.value)}
+              ref={difficultyRef}
+              value={difficulty}
             >
               <option value="" disabled>
                 Seleccione la dificultad de la receta

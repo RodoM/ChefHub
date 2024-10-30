@@ -9,7 +9,6 @@ import UserProfile from "./pages/user/UserProfile";
 import EditUser from "./pages/user/EditUser";
 import UserList from "./pages/user/UserList";
 import CreateModerator from "./pages/moderator/CreateModerator";
-import EditModerator from "./pages/moderator/EditModerator";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import NotFound from "./pages/error/NotFound";
@@ -79,10 +78,7 @@ const App = () => {
             </AdminProtected>
           ),
         },
-        {
-          path: "edit-moderator/:id",
-          element: <EditModerator />,
-        },
+
         {
           path: "*",
           element: <NotFound />,

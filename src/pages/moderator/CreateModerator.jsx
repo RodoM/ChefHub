@@ -88,7 +88,7 @@ const CreateModerator = () => {
       newErrors.fullName = "Por favor, rellena el nombre y apellido";
       fullNameRef.current.focus();
       setErrors(newErrors);
-      return;
+      return;  
     }
     if (email.trim() === "") {
       newErrors.email = "Por favor, rellena el email";
