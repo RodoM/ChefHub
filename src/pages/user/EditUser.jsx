@@ -69,14 +69,18 @@ const EditUser = () => {
     };
 
     const isSuccess = await UpdateUser(userRequest);
-    if (!isSuccess) {
+    if (!isSuccess.success) {
       toast({
         title: "Error al editar el perfil",
+        description: isSuccess.message,
         variant: "destructive",
       });
+      return;
     }
+
     toast({
-      title: "perfil actualizado exitosamente",
+      title: "Perfil actualizado exitosamente",
+      description: isSuccess.message,
       variant: "success",
     });
     setUser({ ...user, photo: userRequest.urlPhoto });

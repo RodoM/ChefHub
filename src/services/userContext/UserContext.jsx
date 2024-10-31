@@ -16,7 +16,7 @@ export const UserContextProvider = ({ children }) => {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`); 
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
     } catch (error) {
       console.error(error);
@@ -24,15 +24,18 @@ export const UserContextProvider = ({ children }) => {
   };
   const CreateUserModerator = async (userRequest) => {
     try {
-      const response = await fetch("https://localhost:7021/api/AdminUser/CreateUser", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getToken()}`,
-          accept: "*/*",
-        },
-        body: JSON.stringify(userRequest),
-      });
+      const response = await fetch(
+        "https://localhost:7021/api/AdminUser/CreateUser",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getToken()}`,
+            accept: "*/*",
+          },
+          body: JSON.stringify(userRequest),
+        }
+      );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -77,19 +80,24 @@ export const UserContextProvider = ({ children }) => {
         },
         body: JSON.stringify(userRequest),
       });
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
+
       const data = await response.json();
 
-      return data;
+      if (!response.ok) {
+        return { success: false, message: data.message };
+      }
+
+      return { success: true, message: data.message };
     } catch (error) {
       console.error(error);
-      return null;
+      return {
+        success: false,
+        message: "Ocurrió un error inesperado. Inténtalo de nuevo más tarde.",
+      };
     }
   };
 
-  const data = { register, GetUserById, UpdateUser,CreateUserModerator };
+  const data = { register, GetUserById, UpdateUser, CreateUserModerator };
 
   return <UserContext.Provider value={data}>{children}</UserContext.Provider>;
 };
