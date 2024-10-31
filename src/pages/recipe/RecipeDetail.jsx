@@ -64,9 +64,9 @@ const RecipeDetail = () => {
     };
     getRecipeById();
   }, [id, GetRecipeById, refetch]);
+  const score = useScoreFormatter(recipe?.comments || []); 
+  const formattedScore = recipe?.comments.length > 0 ? score : "SC"; 
 
-  const score =
-    recipe?.comments.length > 0 ? useScoreFormatter(recipe.comments) : "SC";
   const handleDelete = async () => {
     const result = await DeleteRecipe(id);
     if (result) {
@@ -157,7 +157,7 @@ const RecipeDetail = () => {
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-2 text-muted-foreground">
               <Star />
-              {score}
+              {formattedScore}
             </span>
             <Separator orientation="vertical" className="h-4" />
             <span className="flex items-center gap-2 text-muted-foreground">
