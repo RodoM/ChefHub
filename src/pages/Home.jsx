@@ -1,6 +1,5 @@
-import { LoaderCircle, Plus } from "lucide-react";
+import { LoaderCircle, Plus, UserPlus } from "lucide-react";
 import { RecipeList } from "@/components/recipe/RecipeList";
-import { RecipeFilter } from "@/components/recipe/RecipeFilter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useContext, useEffect } from "react";
@@ -8,9 +7,10 @@ import { AuthenticationContext } from "@/services/authentication/AuthenticationC
 import { Link } from "react-router-dom";
 import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useState } from "react";
+import { ADMIN } from "@/constants/constants";
 
 const Home = () => {
-  const { token } = useContext(AuthenticationContext);
+  const { user } = useContext(AuthenticationContext);
   const { GetAllRecipes } = useContext(RecipeContext);
 
   const [recipes, setRecipes] = useState([]);
@@ -57,14 +57,30 @@ const Home = () => {
           onChange={handleSearchChange}
         />
 
-        {token && (
-          <Button>
-            {" "}
-            <Link to={"/create-recipe"}>
-              <span className="hidden md:block">Crear receta</span>
-              <Plus size={16} className="block md:hidden" />
-            </Link>
-          </Button>
+        {user && user.role === ADMIN ? (
+          <div className="flex gap-4">
+            <Button>
+              <Link to={"/create-recipe"}>
+                <span className="hidden md:block">Crear receta</span>
+                <Plus size={16} className="block md:hidden" />
+              </Link>
+            </Button>
+            <Button>
+              <Link to={"/create-moderator"}>
+                <span className="hidden md:block">Crear usuario</span>
+                <UserPlus size={16} className="block md:hidden" />
+              </Link>
+            </Button>
+          </div>
+        ) : (
+          user && (
+            <Button>
+              <Link to={"/create-recipe"}>
+                <span className="hidden md:block">Crear receta</span>
+                <Plus size={16} className="block md:hidden" />
+              </Link>
+            </Button>
+          )
         )}
       </div>
       <section className="grid">

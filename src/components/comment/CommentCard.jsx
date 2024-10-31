@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
+import { ADMIN, MODERATOR } from "@/constants/constants";
 
 export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
   const { user } = useContext(AuthenticationContext);
@@ -24,7 +25,7 @@ export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
   const closeDialog = () => setIsDialogOpen(false);
 
   const canDelete = () => {
-    if (["Admin", "Moderator"].includes(user.role)) {
+    if ([ADMIN, MODERATOR].includes(user.role)) {
       return true;
     }
     if (Number(user.id) === comment.userResponse.id) {

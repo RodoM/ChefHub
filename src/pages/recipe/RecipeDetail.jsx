@@ -21,6 +21,7 @@ import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
 import { isValidURL } from "@/helper/ValidateUrl";
 import { FaHeart } from "react-icons/fa";
 import { useScoreFormatter } from "@/hooks/UseScoreFormatter";
+import { ADMIN, MODERATOR } from "@/constants/constants";
 
 const RecipeDetail = () => {
   const { user } = useContext(AuthenticationContext);
@@ -216,7 +217,7 @@ const RecipeDetail = () => {
                 </>
               )}
             {/* Si es Admin o Moderador, muestra solo Eliminar */}
-            {["Admin", "Moderator"].includes(user.role) &&
+            {[ADMIN, MODERATOR].includes(user.role) &&
             recipe.userResponse.id === Number(user.id) ? (
               <div className="flex gap-2">
                 <Link
@@ -249,7 +250,7 @@ const RecipeDetail = () => {
                 </Button>
               </div>
             ) : (
-              ["Admin", "Moderator"].includes(user.role) && (
+              [ADMIN, MODERATOR].includes(user.role) && (
                 <Button
                   className="ml-4 flex items-center justify-center"
                   size="icon"
