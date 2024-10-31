@@ -18,6 +18,7 @@ import { isValidURL } from "@/helper/ValidateUrl";
 import { UserContext } from "@/services/userContext/UserContext";
 import { useToast } from "@/hooks/use-toast";
 import { AuthenticationContext } from "@/services/authentication/AuthenticationContext";
+import { USERPLACEHOLDER } from "@/constants/constants";
 const EditUser = () => {
   let { state } = useLocation();
   const [urlPhoto, setUrlPhoto] = useState(state.urlPhoto);
@@ -64,7 +65,7 @@ const EditUser = () => {
       email: email != state.email ? email : null,
       urlPhoto: isValidURL(urlPhoto)
         ? urlPhoto
-        : "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png",
+        : USERPLACEHOLDER,
       description: description,
     };
 

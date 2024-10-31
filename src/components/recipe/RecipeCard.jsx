@@ -17,6 +17,8 @@ import { useToast } from "@/hooks/use-toast";
 import { FaHeart } from "react-icons/fa";
 import { LoadContext } from "@/services/loadContext/LoadContext";
 import { useScoreFormatter } from "@/hooks/UseScoreFormatter";
+import { isValidURL } from "@/helper/ValidateUrl";
+import { RECIPEPLACEHOLDER } from "@/constants/constants";
 export const RecipeCard = ({
   id,
   title,
@@ -85,7 +87,7 @@ export const RecipeCard = ({
   return (
     <Card className="grid sm:grid-cols-[20%_auto]">
       <img
-        src={urlImage}
+        src={isValidURL(urlImage) ? urlImage : RECIPEPLACEHOLDER}
         alt={title}
         className="h-full object-cover rounded-l-lg"
       />

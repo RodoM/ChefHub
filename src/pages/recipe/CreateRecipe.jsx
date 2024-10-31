@@ -7,6 +7,7 @@ import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useContext } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { isValidURL } from "@/helper/ValidateUrl";
+import { RECIPEPLACEHOLDER } from "@/constants/constants";
 
 const CreateRecipe = () => {
   // estas son las definiciones de las referencias
@@ -43,7 +44,7 @@ const CreateRecipe = () => {
 
     const newRecipe = {
       title: title,
-      urlImage: urlImage,
+      urlImage: isValidURL(urlImage) ? urlImage : RECIPEPLACEHOLDER,
       description: description,
       ingredients: ingredients
         .split(",")
@@ -76,7 +77,6 @@ const CreateRecipe = () => {
 
   const validateForm = () => {
     const newErrors = {};
-
 
     if (title.trim() === "") {
       newErrors.title = "El nombre es requerido";
