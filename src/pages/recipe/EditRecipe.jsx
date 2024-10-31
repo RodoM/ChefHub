@@ -7,11 +7,13 @@ import { RecipeContext } from "@/services/recipesContext/RecipesContext";
 import { useContext } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation, useNavigate } from "react-router-dom";
+import { isValidURL } from "@/helper/ValidateUrl";
+import { RECIPEPLACEHOLDER } from "@/constants/constants";
 
 const EditRecipe = () => {
   // obtener el estado de la ruta
   const { state } = useLocation();
-  if(!state) return <div>Loading...</div> // ver mas adelante que mostramos cuando quiere ingresar a la ruta sin el state cargado
+  if (!state) return <div>Loading...</div>; // ver mas adelante que mostramos cuando quiere ingresar a la ruta sin el state cargado
   // estas son las definiciones de las referencias
   const titleRef = useRef();
   const imageRef = useRef();
@@ -49,7 +51,7 @@ const EditRecipe = () => {
 
     const recipeRequest = {
       title: title,
-      urlImage: urlImage,
+      urlImage: isValidURL(urlImage) ? urlImage : RECIPEPLACEHOLDER,
       description: description,
       ingredients: ingredients
         .split(",")

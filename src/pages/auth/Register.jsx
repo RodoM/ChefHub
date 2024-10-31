@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { isValidURL } from "@/helper/ValidateUrl";
+import { USERPLACEHOLDER } from "@/constants/constants";
 const Register = () => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -93,8 +94,7 @@ const Register = () => {
     try {
       const userRequest = formData;
       if (!isValidURL(userRequest.urlPhoto)) {
-        userRequest.urlPhoto =
-          "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png";
+        userRequest.urlPhoto = USERPLACEHOLDER;
       }
       await register(userRequest);
       setErrors({});

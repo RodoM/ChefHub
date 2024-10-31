@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
-export const CommentForm = ({submitComment}) => {
+export const CommentForm = ({ submitComment }) => {
   const [formData, setFormData] = useState({
     text: "",
     score: null,
@@ -61,7 +61,9 @@ export const CommentForm = ({submitComment}) => {
             {errors.score && errors.score}
           </p>
         )}
-        <Select onValueChange={(value) => setFormData({ ...formData, score: value })}>
+        <Select
+          onValueChange={(value) => setFormData({ ...formData, score: value })}
+        >
           <SelectTrigger className="w-28">
             <SelectValue placeholder="Puntaje" />
           </SelectTrigger>
@@ -76,5 +78,5 @@ export const CommentForm = ({submitComment}) => {
         <Button onClick={() => handleSubmit()}>Enviar</Button>
       </div>
     </>
-  )
-}
+  );
+};

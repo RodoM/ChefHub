@@ -21,7 +21,12 @@ import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
 import { isValidURL } from "@/helper/ValidateUrl";
 import { FaHeart } from "react-icons/fa";
 import { useScoreFormatter } from "@/hooks/UseScoreFormatter";
-import { ADMIN, MODERATOR } from "@/constants/constants";
+import {
+  ADMIN,
+  MODERATOR,
+  RECIPEPLACEHOLDER,
+  USERPLACEHOLDER,
+} from "@/constants/constants";
 
 const RecipeDetail = () => {
   const { user } = useContext(AuthenticationContext);
@@ -281,7 +286,7 @@ const RecipeDetail = () => {
             src={
               isValidURL(recipe.userResponse.urlPhoto)
                 ? recipe.userResponse.urlPhoto
-                : "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png"
+                : USERPLACEHOLDER
             }
             alt="foto de perfil"
             className="w-12 h-12 bg-muted-foreground rounded-full"
@@ -300,7 +305,12 @@ const RecipeDetail = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <img src={recipe.urlImage} className="h-full object-cover rounded-lg" />
+        <img
+          src={
+            isValidURL(recipe.urlImage) ? recipe.urlImage : RECIPEPLACEHOLDER
+          }
+          className="h-full object-cover rounded-lg"
+        />
         <div className="flex flex-col gap-4">
           <h3 className="font-semibold">Ingredientes</h3>
           <ul className="list-disc ml-5">

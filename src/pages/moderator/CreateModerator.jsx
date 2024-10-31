@@ -13,6 +13,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useContext, useRef, useState } from "react";
 import { UserContext } from "@/services/userContext/UserContext";
 import { useToast } from "@/hooks/use-toast";
+import { isValidURL } from "@/helper/ValidateUrl";
+import { USERPLACEHOLDER } from "@/constants/constants";
 
 const CreateModerator = () => {
   //Inicio definicion de variables de formulario para validacion de campos requeridos
@@ -50,7 +52,7 @@ const CreateModerator = () => {
     const newUser = {
       fullName,
       email,
-      urlPhoto,
+      urlPhoto: isValidURL(urlPhoto) ? urlPhoto : USERPLACEHOLDER,
       tipoRol: Number(rol),
       description,
       password,
@@ -88,7 +90,7 @@ const CreateModerator = () => {
       newErrors.fullName = "Por favor, rellena el nombre y apellido";
       fullNameRef.current.focus();
       setErrors(newErrors);
-      return;  
+      return;
     }
     if (email.trim() === "") {
       newErrors.email = "Por favor, rellena el email";

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
-import { ADMIN, MODERATOR } from "@/constants/constants";
+import { ADMIN, MODERATOR, USERPLACEHOLDER } from "@/constants/constants";
 
 export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
   const { user } = useContext(AuthenticationContext);
@@ -91,7 +91,7 @@ export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
               src={
                 comment.userResponse.urlPhoto
                   ? comment.userResponse.urlPhoto
-                  : "https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png"
+                  : USERPLACEHOLDER
               }
               alt="foto de perfil"
               className="w-9 h-9 bg-muted-foreground rounded-full"
