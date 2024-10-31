@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
+import { isValidURL } from "@/helper/ValidateUrl";
 import { ADMIN, MODERATOR, USERPLACEHOLDER } from "@/constants/constants";
 
 export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
@@ -89,7 +90,7 @@ export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
           <div className="flex items-center gap-2">
             <img
               src={
-                comment.userResponse.urlPhoto
+                isValidURL(comment.userResponse.urlPhoto)
                   ? comment.userResponse.urlPhoto
                   : USERPLACEHOLDER
               }

@@ -34,7 +34,8 @@ export const RecipeCard = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const { toast } = useToast();
 
-  const score = comments.length > 0 ? useScoreFormatter(comments) : "SC";
+  const score = useScoreFormatter(comments || []);
+  const formattedScore = comments.length > 0 ? score : "SC";
 
   const { handleLoad } = useContext(LoadContext);
 
@@ -121,7 +122,7 @@ export const RecipeCard = ({
             <Flame /> {difficulty}
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
-            <Star /> {score}
+            <Star /> {formattedScore}
           </div>
         </CardContent>
         <CardFooter>
