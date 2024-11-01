@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
 import { isValidURL } from "@/helper/ValidateUrl";
 import { ADMIN, MODERATOR, USERPLACEHOLDER } from "@/constants/constants";
+import { Link } from "react-router-dom";
 
 export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
   const { user } = useContext(AuthenticationContext);
@@ -87,18 +88,21 @@ export const CommentCard = ({ recipeId, comment, handleRefetch }) => {
     <>
       <Card>
         <CardHeader className="flex flex-row justify-between items-center space-y-0">
-          <div className="flex items-center gap-2">
-            <img
-              src={
-                isValidURL(comment.userResponse.urlPhoto)
-                  ? comment.userResponse.urlPhoto
-                  : USERPLACEHOLDER
-              }
-              alt="foto de perfil"
-              className="w-9 h-9 bg-muted-foreground rounded-full"
-            />
-            <p className="font-semibold">{comment.userResponse.fullName}</p>
-          </div>
+          <Link to={`/user-profile/${comment.userResponse.id}`}>
+            <div className="flex items-center gap-2">
+              <img
+                src={
+                  isValidURL(comment.userResponse.urlPhoto)
+                    ? comment.userResponse.urlPhoto
+                    : USERPLACEHOLDER
+                }
+                alt="foto de perfil"
+                className="w-9 h-9 bg-muted-foreground rounded-full"
+              />
+              <p className="font-semibold">{comment.userResponse.fullName}</p>
+            </div>
+          </Link>
+
           <>
             {edit ? (
               <Select onValueChange={(value) => setScore(Number(value))}>
