@@ -261,7 +261,13 @@ const CreateModerator = () => {
         </div>
 
         <div className="flex justify-end gap-8">
-          <Button variant="secondary">Volver</Button>
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() => window.history.back()}
+          >
+            Volver
+          </Button>
           <Button>Crear usuario</Button>
         </div>
       </form>

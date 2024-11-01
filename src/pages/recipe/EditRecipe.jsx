@@ -270,7 +270,13 @@ const EditRecipe = () => {
         </div>
 
         <div className="flex justify-end space-x-8">
-          <Button variant="outline">Volver</Button>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => window.history.back()}
+          >
+            Volver
+          </Button>
           <Button>Editar Receta</Button>
         </div>
       </form>

@@ -230,19 +230,6 @@ const CreateRecipe = () => {
               <p className="text-red-500">{errors.categories}</p>
             )}
           </div>
-          {/* <div className="">
-            <Label className="block mb-2">Dificultad</Label>
-            <Input
-              className="w-full"
-              placeholder="Seleccione la dificultad de la receta"
-              onChange={(e) => setDifficulty(e.target.value)}
-              ref={difficultyRef}
-              value={difficulty}
-            />
-            {errors.difficulty && (
-              <p className="text-red-500">{errors.difficulty}</p>
-            )}
-          </div> */}
           <div className="">
             <Label className="block mb-2">Dificultad</Label>
             <select
@@ -279,7 +266,13 @@ const CreateRecipe = () => {
         </div>
 
         <div className="flex justify-end space-x-8">
-          <Button variant="outline">Volver</Button>
+          <Button
+            variant="outline"
+            type="submit"
+            onClick={() => window.history.back()}
+          >
+            Volver
+          </Button>
           <Button>Publicar Receta</Button>
         </div>
       </form>
