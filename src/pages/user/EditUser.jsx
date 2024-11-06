@@ -21,6 +21,9 @@ import { AuthenticationContext } from "@/services/authentication/AuthenticationC
 import { USERPLACEHOLDER } from "@/constants/constants";
 const EditUser = () => {
   let { state } = useLocation();
+  if (state === null) {
+    return <div>Loading...</div>;
+  }
   const [urlPhoto, setUrlPhoto] = useState(state.urlPhoto);
   const [fullName, setFullName] = useState(state.fullName);
   const [email, setEmail] = useState(state.email);
@@ -63,9 +66,7 @@ const EditUser = () => {
     const userRequest = {
       fullName: fullName,
       email: email != state.email ? email : null,
-      urlPhoto: isValidURL(urlPhoto)
-        ? urlPhoto
-        : USERPLACEHOLDER,
+      urlPhoto: isValidURL(urlPhoto) ? urlPhoto : USERPLACEHOLDER,
       description: description,
     };
 
